@@ -16,6 +16,7 @@ class Character:
         txt: str = f"NAME: {self.name} | INITIATIVE: {self.initiative} \n" \
                    f"HP: {self.health} | MANA: {self.mana} | ARMOR: {self.armor} | W_DMG: {self.weapon_dmg}\n" \
                    f"is dead: {self.is_dead()}"
+        # adds the color red when a character is dead
         if self.is_dead():
             txt = "\033[91m" + txt + "\033[0m"
         return txt
