@@ -10,51 +10,43 @@ class CharCodes(enum.Enum):
 class InitiativePhase:
 
     def __init__(self, squad1: Squad, squad2: Squad):
-        self.squad1 = squad1
-        self.squad2 = squad2
-        self.generate_turn_orders(self.squad1)
-        self.generate_turn_orders(self.squad2)
-        self.action_order_list: list[Character] = []
-        self.init_action_order_list()
-        self.insertion_sort_action_order_list()
+        self.action_order_list: list[Character] = []  # this class just exists in order to generate this list
+        self._generate_turn_orders_of_a_squad(squad1)
+        self._generate_turn_orders_of_a_squad(squad2)
+        self._treat_and_add_squad_to_action_order_list(squad1)
+        self._treat_and_add_squad_to_action_order_list(squad2)
+        self._insertion_sort_action_order_list()
 
-    def d20(self):
+    @staticmethod
+    def _d20() -> int:
         result = randrange(1, 20)
         return result
 
-    def generate_turn_orders(self, squad: Squad):
+    @staticmethod
+    def _generate_turn_orders_of_a_squad(squad: Squad) -> None:
         for char in squad.list_of_char:
             if char.is_dead():
                 char.turnOrder = CharCodes.DeadChar
             else:
-                char.turnOrder = char.initiative + self.d20()
+                char.turnOrder = char.initiative + InitiativePhase._d20()
 
-    def init_action_order_list(self):
-        for char in self.squad1.list_of_char:
-            if char.turnOrder != CharCodes.DeadChar:
-                self.action_order_list.append(char)
-        for char in self.squad2.list_of_char:
-            if char.turnOrder != CharCodes.DeadChar:
+    def _treat_and_add_squad_to_action_order_list(self, squad_to_be_added: Squad) -> None:
+        for char in squad_to_be_added.list_of_char:
+            if char.turnOrder != CharCodes.DeadChar:  # simply adds the chars to the list, except the dead ones
                 self.action_order_list.append(char)
 
-    def insertion_sort_action_order_list(self):
-        # iterate over unsorted array
-        for i in range(1, len(self.action_order_list)):
-            # get element value
-            val = self.action_order_list[i]
-            # insertion "hole" is at index i
-            hole = i
+    def _insertion_sort_action_order_list(self) -> None:
+        for i in range(1, len(self.action_order_list)):  # iterate over unsorted array
+            val = self.action_order_list[i]  # get element value
+            hole = i  # insertion "hole" is at index i
             # loop backwards until a value greater than current value is found
             while hole > 0 and self.action_order_list[hole - 1].turnOrder < val.turnOrder:
-                # swap elements towards correct position
-                self.action_order_list[hole] = self.action_order_list[hole - 1]
-                # move backwards
-                hole -= 1
-            # insert value into correct position
-            self.action_order_list[hole] = val
+                self.action_order_list[hole] = self.action_order_list[hole - 1]  # swap elements towards correct pos
+                hole -= 1  # move backwards
+            self.action_order_list[hole] = val  # insert value into correct position
 
-    def to_string(self):
-        text = "ACTION ORDER: | "
-        for i in range(0, len(self.action_order_list)):
-            text += f"{self.action_order_list[i].name}: {self.action_order_list[i].turnOrder} | "
+    def to_string(self) -> str:
+        text = "ACTION ORDER: \n| "
+        for char in self.action_order_list:
+            text += f"{char.name}: {char.turnOrder}(init+D20:{char.turnOrder - char.initiative}) | "
         return text

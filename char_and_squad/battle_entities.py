@@ -1,6 +1,6 @@
 class Character:
 
-    def __init__(self, name, health, mana, armor, weapon_dmg, initiative):
+    def __init__(self, name: str, health: int, mana: int, armor: int, weapon_dmg: int, initiative: int):
         self.name = name
         self.health = health
         self.mana = mana
@@ -9,13 +9,12 @@ class Character:
         self.initiative = initiative
         self.turnOrder = 0
 
-    def is_dead(self):
+    def is_dead(self) -> bool:
         return self.health <= 0
 
     def to_string(self) -> str:
-        txt: str = f"NAME: {self.name} | INITIATIVE: {self.initiative} \n" \
-                   f"HP: {self.health} | MANA: {self.mana} | ARMOR: {self.armor} | W_DMG: {self.weapon_dmg}\n" \
-                   f"is dead: {self.is_dead()}"
+        txt: str = f"{self.name} \nINITIATIVE: {self.initiative} | HP: {self.health} | MANA: {self.mana} " \
+                   f"| ARMOR: {self.armor} | W_DMG: {self.weapon_dmg} | is dead: {self.is_dead()}"
         # adds the color red when a character is dead
         if self.is_dead():
             txt = "\033[91m" + txt + "\033[0m"
@@ -28,14 +27,14 @@ class Squad:
         self.squad_name = squad_name
         self.list_of_char = list_of_char
 
-    def to_string(self):
-        width = 45
-        text: str = "="*width + "\n" + f"Squad: {self.squad_name} \n" + "-"*width + "\n"
+    def to_string(self) -> str:
+        line_length: int = 75
+        text: str = "="*line_length + "\n" + f"Squad ({self.squad_name}) \n" + "-"*line_length + "\n"
         for i in range(0, len(self.list_of_char)):
             text += self.list_of_char[i].to_string()
             if i != len(self.list_of_char) - 1:
-                text += "\n" + "-"*width + "\n"
+                text += "\n" + "-"*line_length + "\n"
             else:
                 text += "\n"
-        text += "="*width
+        text += "="*line_length
         return text
