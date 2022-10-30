@@ -4,6 +4,7 @@ from char_and_squad.battle_entities import Character
 # VARS
 general_length = 24
 
+
 # main function
 def inspect_stats(character: Character):
     print("\n" + "=" * general_length)
