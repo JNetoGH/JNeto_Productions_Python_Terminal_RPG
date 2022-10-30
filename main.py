@@ -1,6 +1,6 @@
 from char_and_squad.battle_entities import Character, Squad
 from battle_phases.initiative_phase import InitiativePhase
-from ui import battle_stats
+from ui.battle_stats import *
 
 
 squad1 = Squad("player squad", [Character("Joao", 10, 5, 5, 5, 10), Character("Dani", 10, 5, 5, 5, 10), Character("Lulu", 0, 5, 5, 5, 10)])
@@ -15,5 +15,5 @@ print(initiative_phase.to_string())
 
 
 
-battle_stats.inspect_stats(squad1.list_of_char[0])
-battle_stats.inspect_stats(squad2.list_of_char[0])
+print(get_char_card(squad1.list_of_char[0], GENERAL_LINE_LENGTH))
+print(get_char_card(squad2.list_of_char[0], GENERAL_LINE_LENGTH))

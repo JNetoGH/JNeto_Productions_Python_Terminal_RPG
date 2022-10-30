@@ -1,33 +1,34 @@
 # IMPORTS
 from char_and_squad.battle_entities import Character
 
-# VARS
-general_line_length = 24
+# NAO PODE SER IMPAR
+GENERAL_LINE_LENGTH = 24
 
 # DOUBLE LINES
-general_wall = "║"
-general_line = "═"
-general_up_left_corner = "╔"
-general_bottom_left_corner = "╚"
-general_up_right_corner = "╗"
-general_bottom_right_corner = "╝"
+GENERAL_WALL = "║"
+GENERAL_LINE = "═"
+GENERAL_UP_LEFT_CORNER = "╔"
+GENERAL_BOTTOM_LEFT_CORNER = "╚"
+GENERAL_UP_RIGHT_CORNER = "╗"
+GENERAL_BOTTOM_RIGHT_CORNER = "╝"
 
 # LIGHT SINGLE LINES
-general_light_line = "─"
-general_light_line_left_connector = "╟"
-general_light_line_right_connector = "╢"
+GENERAL_LIGHT_LINE = "─"
+GENERAL_LIGHT_LEFT_CONNECTOR = "╟"
+GENERAL_LIGHT_RIGHT_CONNECTOR = "╢"
 
 
-def inspect_stats(character: Character):
-    print(f"{general_up_left_corner}{(general_line * (general_line_length - 2))}{general_up_right_corner}")
-    print(get_centralized_stat_line(general_line_length, character.name, general_wall, general_wall))
-    print(f"{general_light_line_left_connector}{general_light_line * (general_line_length - 2)}{general_light_line_right_connector}")
-    print(get_centralized_stat_line(general_line_length, f"HP: {character.health}", general_wall, general_wall))
-    print(get_centralized_stat_line(general_line_length, f"Attack: {character.weapon_dmg}", general_wall, general_wall))
-    print(get_centralized_stat_line(general_line_length, f"Mana: {character.mana}", general_wall, general_wall))
-    print(get_centralized_stat_line(general_line_length, f"Armor: {character.armor}", general_wall, general_wall))
-    print(get_centralized_stat_line(general_line_length, f"Initiative: {character.initiative}", general_wall, general_wall))
-    print(f"{general_bottom_left_corner}{(general_line * (general_line_length - 2))}{general_bottom_right_corner}")
+def get_char_card(character: Character, line_length: int):
+    card = f"{GENERAL_UP_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_UP_RIGHT_CORNER}\n"
+    card += get_centralized_stat_line(line_length, character.name, GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += f"{GENERAL_LIGHT_LEFT_CONNECTOR}{GENERAL_LIGHT_LINE * (line_length - 2)}{GENERAL_LIGHT_RIGHT_CONNECTOR}\n"
+    card += get_centralized_stat_line(line_length, f"HP: {character.health}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += get_centralized_stat_line(line_length, f"Attack: {character.weapon_dmg}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += get_centralized_stat_line(line_length, f"Mana: {character.mana}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += get_centralized_stat_line(line_length, f"Armor: {character.armor}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += get_centralized_stat_line(line_length, f"Initiative: {character.initiative}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += f"{GENERAL_BOTTOM_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_BOTTOM_RIGHT_CORNER}\n"
+    return card
 
 
 def get_centralized_stat_line(line_length: int, msg: str = "Default", wall1: str = " ", wall2: str = " ") -> str:
@@ -38,6 +39,7 @@ def get_centralized_stat_line(line_length: int, msg: str = "Default", wall1: str
     # therefore, it would be, (line_length - 5) + msg + (line_length - 5), being discounted 10 for the msg instead o 11
     else:
         return wall1 + " " * (int((line_length / 2 - len(msg) / 2)) - 1) + msg + " " * (int((line_length / 2 - len(msg) / 2)) - 1) + " " + wall2
+
 
 
 """
