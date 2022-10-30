@@ -1,27 +1,33 @@
-# Exemplo
-
 # IMPORTS
-import random
-from main import char
+from char_and_squad.battle_entities import Character
 
 # VARS
-leth = 23
-
+general_length = 24
 
 # main function
-def inspectStats(character):
-    if character == "Monstrinho":
-        print("\n" + "=" * leth)
-        print("|" + " " * 5 + "Monstrinho" + " " * 6 + "|")
-        print("=" * leth)
-        print("|" + " " * 5 + f"HP : {char.health}" + " " * 9 + "|")
-        print("|" + " " * 5 + f"Attack : {char.weapon_dmg}" + " " * 6 + "|")
-        print("|" + " " * 5 + f"Mana : {char.mana}" + " " * 8 + "|")
-        print("|" + " " * 5 + f"Initiative : {char.initiative}" + " " * 1 + "|")
-        print("|" + " " * 5 + f"Armor : {char.armor}" + " " * 7 + "|")
-        print("=" * leth)
+def inspect_stats(character: Character):
+    print("\n" + "=" * general_length)
+    print(get_centralized_stat_line(general_length, character.name))
+    print("=" * general_length)
+    print(get_centralized_stat_line(general_length, f"HP: {character.health}"))
+    print(get_centralized_stat_line(general_length, f"Attack: {character.weapon_dmg}"))
+    print(get_centralized_stat_line(general_length, f"Mana: {character.mana}"))
+    print(get_centralized_stat_line(general_length, f"Armor: {character.armor}"))
+    print(get_centralized_stat_line(general_length, f"Initiative: {character.initiative}"))
+    print("=" * general_length)
 
 
+def get_centralized_stat_line(line_length: int, msg: str) -> str:
+    is_msg_length_even = len(msg) % 2 == 0
+    if is_msg_length_even:
+        return "|" + " " * (int((line_length / 2 - len(msg) / 2)) - 1) + msg + " " * (int((line_length / 2 - len(msg) / 2)) - 1) + "|"
+    # Adds an extra space "|" -> " |", e.g. len(msg) = 11, the division per 2 would be 5, not 5.5,
+    # therefore, it would be, (line_length - 5) + msg + (line_length - 5), being discounted 10 for the msg instead o 11
+    else:
+        return "|" + " " * (int((line_length / 2 - len(msg) / 2)) - 1) + msg + " " * (int((line_length / 2 - len(msg) / 2)) - 1) + " |"
+
+
+"""
 # playable branch
 while True:
     print(f"\nOPTIONS: \n[1]   Fight\n[2]   Flee\n[3]   Inspect Enemy")
@@ -40,3 +46,4 @@ while True:
             print("\n You flee!")
         else:
             print("\nFAILED FLEEING. \n STARTING FIGHTING...\n\nYou lose your initiative for this round.")
+"""
