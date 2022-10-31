@@ -4,7 +4,7 @@ import enum
 
 
 class CharCodes(enum.Enum):
-    DeadChar = -1
+    DEAD_CHAR = -1
 
 
 class InitiativePhase:
@@ -26,13 +26,13 @@ class InitiativePhase:
     def _generate_turn_orders_of_a_squad(squad: Squad) -> None:
         for char in squad.list_of_char:
             if char.is_dead():
-                char.turn_order = CharCodes.DeadChar
+                char.turn_order = CharCodes.DEAD_CHAR
             else:
                 char.turn_order = char.initiative + InitiativePhase._d20()
 
     def _treat_and_add_squad_to_action_order_list(self, squad_to_be_added: Squad) -> None:
         for char in squad_to_be_added.list_of_char:
-            if char.turn_order != CharCodes.DeadChar:  # simply adds the chars to the list, except the dead ones
+            if char.turn_order != CharCodes.DEAD_CHAR:  # simply adds the chars to the list, except the dead ones
                 self.action_order_list.append(char)
 
     def _insertion_sort_action_order_list(self) -> None:
