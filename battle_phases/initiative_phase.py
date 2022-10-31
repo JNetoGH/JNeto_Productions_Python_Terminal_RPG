@@ -1,4 +1,4 @@
-from char_and_squad.battle_entities import Squad, Character
+from battle_entities.char_and_squad import Squad, Character
 from random import *
 import enum
 

@@ -15,7 +15,7 @@ GENERAL_LIGHT_LEFT_CONNECTOR = "╟"
 GENERAL_LIGHT_RIGHT_CONNECTOR = "╢"
 
 
-def get_char_card(char, line_length: int):
+def get_char_card(char, line_length: int = GENERAL_LINE_LENGTH):
     card = f"{GENERAL_UP_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_UP_RIGHT_CORNER}\n"
     card += get_centralized_stat_line(line_length, char.name, GENERAL_WALL, GENERAL_WALL) + "\n"
     card += f"{GENERAL_LIGHT_LEFT_CONNECTOR}{GENERAL_LIGHT_LINE * (line_length - 2)}{GENERAL_LIGHT_RIGHT_CONNECTOR}\n"
@@ -28,7 +28,7 @@ def get_char_card(char, line_length: int):
     return card
 
 
-def get_squad_char_cards_inline(squad, line_length: int):
+def get_squad_char_cards_inline(squad, line_length: int = GENERAL_LINE_LENGTH):
     padding = 3
     squad_char_cards_inline = ""
     for i in range(0, 9):
