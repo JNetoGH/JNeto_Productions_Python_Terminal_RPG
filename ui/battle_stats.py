@@ -15,6 +15,19 @@ GENERAL_LIGHT_LEFT_CONNECTOR = "╟"
 GENERAL_LIGHT_RIGHT_CONNECTOR = "╢"
 
 
+def get_char_card(char, line_length: int):
+    card = f"{GENERAL_UP_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_UP_RIGHT_CORNER}\n"
+    card += get_centralized_stat_line(line_length, char.name, GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += f"{GENERAL_LIGHT_LEFT_CONNECTOR}{GENERAL_LIGHT_LINE * (line_length - 2)}{GENERAL_LIGHT_RIGHT_CONNECTOR}\n"
+    card += get_centralized_stat_line(line_length, f"HP: {char.health}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += get_centralized_stat_line(line_length, f"Attack: {char.weapon_dmg}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += get_centralized_stat_line(line_length, f"Mana: {char.mana}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += get_centralized_stat_line(line_length, f"Armor: {char.armor}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += get_centralized_stat_line(line_length, f"Initiative: {char.initiative}", GENERAL_WALL, GENERAL_WALL) + "\n"
+    card += f"{GENERAL_BOTTOM_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_BOTTOM_RIGHT_CORNER}"
+    return card
+
+
 def get_squad_char_cards_inline(squad, line_length: int):
     padding = 3
     squad_char_cards_inline = ""
@@ -61,19 +74,6 @@ def _get_char_card_squad_line(squad, line_index, line_length, padding, add_line_
     if add_line_break:
         line += "\n"
     return line
-
-
-def get_char_card(char, line_length: int):
-    card = f"{GENERAL_UP_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_UP_RIGHT_CORNER}\n"
-    card += get_centralized_stat_line(line_length, char.name, GENERAL_WALL, GENERAL_WALL) + "\n"
-    card += f"{GENERAL_LIGHT_LEFT_CONNECTOR}{GENERAL_LIGHT_LINE * (line_length - 2)}{GENERAL_LIGHT_RIGHT_CONNECTOR}\n"
-    card += get_centralized_stat_line(line_length, f"HP: {char.health}", GENERAL_WALL, GENERAL_WALL) + "\n"
-    card += get_centralized_stat_line(line_length, f"Attack: {char.weapon_dmg}", GENERAL_WALL, GENERAL_WALL) + "\n"
-    card += get_centralized_stat_line(line_length, f"Mana: {char.mana}", GENERAL_WALL, GENERAL_WALL) + "\n"
-    card += get_centralized_stat_line(line_length, f"Armor: {char.armor}", GENERAL_WALL, GENERAL_WALL) + "\n"
-    card += get_centralized_stat_line(line_length, f"Initiative: {char.initiative}", GENERAL_WALL, GENERAL_WALL) + "\n"
-    card += f"{GENERAL_BOTTOM_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_BOTTOM_RIGHT_CORNER}"
-    return card
 
 
 def get_centralized_stat_line(line_length: int, msg: str = "Default", wall1: str = " ", wall2: str = " ") -> str:
