@@ -77,6 +77,9 @@ def get_char_card(char, line_length: int):
 
 
 def get_centralized_stat_line(line_length: int, msg: str = "Default", wall1: str = " ", wall2: str = " ") -> str:
+    if line_length % 2 != 0:
+        raise Exception("lines can't be set with an odd length, only even")
+
     is_msg_length_even = len(msg) % 2 == 0
     if is_msg_length_even:
         return wall1 + " " * (int((line_length / 2 - len(msg) / 2)) - 1) + msg + " " * (

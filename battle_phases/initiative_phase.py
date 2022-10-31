@@ -26,13 +26,13 @@ class InitiativePhase:
     def _generate_turn_orders_of_a_squad(squad: Squad) -> None:
         for char in squad.list_of_char:
             if char.is_dead():
-                char.turnOrder = CharCodes.DeadChar
+                char.turn_order = CharCodes.DeadChar
             else:
-                char.turnOrder = char.initiative + InitiativePhase._d20()
+                char.turn_order = char.initiative + InitiativePhase._d20()
 
     def _treat_and_add_squad_to_action_order_list(self, squad_to_be_added: Squad) -> None:
         for char in squad_to_be_added.list_of_char:
-            if char.turnOrder != CharCodes.DeadChar:  # simply adds the chars to the list, except the dead ones
+            if char.turn_order != CharCodes.DeadChar:  # simply adds the chars to the list, except the dead ones
                 self.action_order_list.append(char)
 
     def _insertion_sort_action_order_list(self) -> None:
@@ -40,7 +40,7 @@ class InitiativePhase:
             val = self.action_order_list[i]  # get element value
             hole = i  # insertion "hole" is at index i
             # loop backwards until a value greater than current value is found
-            while hole > 0 and self.action_order_list[hole - 1].turnOrder < val.turnOrder:
+            while hole > 0 and self.action_order_list[hole - 1].turn_order < val.turn_order:
                 self.action_order_list[hole] = self.action_order_list[hole - 1]  # swap elements towards correct pos
                 hole -= 1  # move backwards
             self.action_order_list[hole] = val  # insert value into correct position
@@ -48,5 +48,5 @@ class InitiativePhase:
     def to_string(self) -> str:
         text = "ACTION ORDER: \n| "
         for char in self.action_order_list:
-            text += f"{char.name}: {char.turnOrder}(init+D20:{char.turnOrder - char.initiative}) | "
+            text += f"{char.name}: {char.turn_order}(init+D20:{char.turn_order - char.initiative}) | "
         return text
