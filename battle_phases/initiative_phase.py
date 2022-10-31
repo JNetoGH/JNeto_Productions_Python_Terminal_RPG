@@ -32,8 +32,8 @@ class InitiativePhase:
             else:
                 char.turn_order = char.initiative + InitiativePhase._d20()
 
-    def _treat_and_add_squad_to_action_order_list(self, squad_to_be_added: Squad) -> None:
-        for char in squad_to_be_added.list_of_char:
+    def _treat_and_add_squad_to_action_order_list(self, squad: Squad) -> None:
+        for char in squad.list_of_char:
             if char.turn_order != CharCodes.DEAD_CHAR:  # simply adds the chars to the list, except the dead ones
                 self.action_order_list.append(char)
 
