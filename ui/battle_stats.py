@@ -15,7 +15,7 @@ GENERAL_LIGHT_LEFT_CONNECTOR = "╟"
 GENERAL_LIGHT_RIGHT_CONNECTOR = "╢"
 
 
-def get_char_card(char, line_length: int = GENERAL_LINE_LENGTH):
+def get_char_card(char, line_length: int = GENERAL_LINE_LENGTH) -> str:
     card = f"{GENERAL_UP_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_UP_RIGHT_CORNER}\n"
     card += get_centralized_stat_line(line_length, char.name, GENERAL_WALL, GENERAL_WALL) + "\n"
     card += f"{GENERAL_LIGHT_LEFT_CONNECTOR}{GENERAL_LIGHT_LINE * (line_length - 2)}{GENERAL_LIGHT_RIGHT_CONNECTOR}\n"
@@ -28,7 +28,7 @@ def get_char_card(char, line_length: int = GENERAL_LINE_LENGTH):
     return card
 
 
-def get_squad_char_cards_inline(squad, line_length: int = GENERAL_LINE_LENGTH):
+def get_squad_char_cards_inline(squad, line_length: int = GENERAL_LINE_LENGTH) -> str:
     padding = 3
     squad_char_cards_inline = ""
     for i in range(0, 9):
@@ -38,7 +38,7 @@ def get_squad_char_cards_inline(squad, line_length: int = GENERAL_LINE_LENGTH):
 
 
 # concatenates the all the chars cards (x line) into one single line, separated with a padding
-def _get_char_card_squad_line(squad, line_index, line_length, padding, add_line_break: bool):
+def _get_char_card_squad_line(squad, line_index, line_length, padding, add_line_break: bool) -> str:
     line = ""
     for char in squad.list_of_char:
 
