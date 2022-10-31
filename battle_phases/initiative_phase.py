@@ -10,11 +10,13 @@ class CharCodes(enum.Enum):
 class InitiativePhase:
 
     def __init__(self, squad1: Squad, squad2: Squad):
+        self.squad1: Squad = squad1
+        self.squad2: Squad = squad2
         self.action_order_list: list[Character] = []  # this class just exists in order to generate this list
-        self._generate_turn_orders_of_a_squad(squad1)
-        self._generate_turn_orders_of_a_squad(squad2)
-        self._treat_and_add_squad_to_action_order_list(squad1)
-        self._treat_and_add_squad_to_action_order_list(squad2)
+        self._generate_turn_orders_of_a_squad(self.squad1)
+        self._generate_turn_orders_of_a_squad(self.squad2)
+        self._treat_and_add_squad_to_action_order_list(self.squad1)
+        self._treat_and_add_squad_to_action_order_list(self.squad2)
         self._insertion_sort_action_order_list()
 
     @staticmethod
