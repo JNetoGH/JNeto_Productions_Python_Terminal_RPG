@@ -1,5 +1,4 @@
 import os
-
 import ui.battle_stats
 from battle_entities.char_and_squad import Character, Squad, Ownership
 from battle_phases.initiative_phase import InitiativePhase
@@ -16,52 +15,53 @@ class ActionPhase:
         self.all_chars = self.action_order_list.copy()
 
         self.force_skip = False
-        while len(self.action_order_list) != 0:  # while action_order_list is not empty
+        self.force_quit_battle = False
+        while len(self.action_order_list) != 0 and self.is_there_a_winner() == Ownership.NULL:  # while action_order_list is not empty and there is no winner
+
+            print(ui.battle_stats.get_battle_current_state(self.initiative_phase), end="")
             current_char = self.action_order_list[0]
-            self._run_action_turn(current_char)
-            if self.force_skip:
-                self.force_skip = False
-                break
+
+            self._run_action_turn_for_char(current_char)
             self.remove_a_char_from_action_order_list(current_char)
             self.remove_dead_chars_from_action_order_list()
+
+            # ActionPhase flow control
+            if self.force_skip:
+                self.force_skip = False
+                continue
+            elif self.force_quit_battle:
+                break
+            else:
+                input("press any key to next turn")
+
+            # cleans it up for the next ui
             os.system("cls")
             print()
 
-            print(ui.battle_stats.get_battle_current_state(self.initiative_phase), end="")
-
-        if self.is_there_a_winner() == Ownership.PLAYER:
-            print("player venceu")
-        elif self.is_there_a_winner() == Ownership.ENEMY:
-            print("enemy venceu")
-        elif self.is_there_a_winner() == Ownership.NULL:
-            print("action_order_list is empty")
-
-    def _run_action_turn(self, char: Character):
+    def _run_action_turn_for_char(self, char: Character):
         if char.ownership == Ownership.PLAYER:
             self._player_action(char)
         elif char.ownership == Ownership.ENEMY:
-            self._ai_action()
+            self._ai_action(char)
         print()  # jumps a line
 
     def _player_action(self, current_char: Character):
-
         # prints the current char
         print(f"\nTURN: {current_char.name}")
         print(ui.battle_stats.get_char_card(current_char))
-
         # picks an alive char only
         other_char: Character = None
         while other_char is None:
-
-            chosen_char_name = input(f"Which char should {current_char.name} pick?: ").capitalize()
-            if chosen_char_name == "Quit":
+            chosen_char_name = input(f"Which char should {current_char.name} pick? (skip/quit are valid): ").capitalize()
+            if chosen_char_name == "Skip":
                 self.force_skip = True
                 return
-
+            elif chosen_char_name == "Quit":
+                self.force_quit_battle = True
+                return
             for char in self.all_chars:
                 if char.name.capitalize() == chosen_char_name:
                     other_char = char
-
             if other_char is None:
                 print(f"invalid input, {chosen_char_name} does not exist")
             elif other_char is current_char:
@@ -70,10 +70,8 @@ class ActionPhase:
             elif other_char.is_dead():
                 print(f"invalid input, {other_char.name} is already dead")
                 other_char = None
-
-        # makes the atk and remove the char if its dead
+        # makes the atk action
         dmg = ActionPhase._physical_atk(current_char, other_char)
-
         # prints battle current state
         print(f"{current_char.name} attacked {other_char.name}: tot dmg = {dmg}")
         print()
@@ -86,10 +84,9 @@ class ActionPhase:
         charDef.health -= dmg
         return dmg
 
-    def _ai_action(self):
+    def _ai_action(self, char: Character):
         print("\nai action no implemented yet, using same system as player")
-        self._player_action()
-        input("press any key to continue")
+        self._player_action(char)
 
     def remove_a_char_from_action_order_list(self, char: Character) -> bool:
         if char in self.action_order_list:
