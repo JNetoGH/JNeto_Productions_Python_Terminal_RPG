@@ -5,6 +5,7 @@ from battle_phases.initiative_phase import InitiativePhase
 
 
 class ActionPhase:
+
     def __init__(self, initiative_phase: InitiativePhase):
         self.initiative_phase = initiative_phase
         self.squad1 = self.initiative_phase.squad1
