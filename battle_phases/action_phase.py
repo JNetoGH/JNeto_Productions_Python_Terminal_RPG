@@ -17,15 +17,17 @@ class ActionPhase:
         self.force_skip = False
         self.force_quit_battle = False
         while len(self.action_order_list) != 0 and self.is_there_a_winner() == Ownership.NULL:  # while action_order_list is not empty and there is no winner
-
+            # prints Ui
             print(ui.battle_stats.get_battle_current_state(self.initiative_phase), end="")
+            # sets the current char according to the action order list
             current_char = self.action_order_list[0]
-
+            # runs action of the current char user/AI based
             self._run_action_turn_for_char(current_char)
+            # removes from the action order list the current char, passing the action to the next on if the is any
             self.remove_a_char_from_action_order_list(current_char)
+            # removes all dead chars from the action order list th
             self.remove_dead_chars_from_action_order_list()
-
-            # ActionPhase flow control
+            # ActionPhase flow control: checks for skips and breaks, if there is none, cleans the screen to next char, if there is any
             if self.force_skip:
                 self.force_skip = False
                 os.system("cls")
@@ -35,8 +37,7 @@ class ActionPhase:
                 break
             else:
                 input("press any key to next turn")
-
-            # cleans it up for the next ui
+            # cleans the screen for the next ui
             os.system("cls")
             print()
 
