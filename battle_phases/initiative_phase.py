@@ -48,7 +48,7 @@ class InitiativePhase:
             self.action_order_list[hole] = val  # insert value into correct position
 
     def to_string(self) -> str:
-        text = "ACTION ORDER: "
+        text = "ACTION ORDER(init+D20): "
         for char in self.action_order_list:
-            text += f"{char.name} {char.turn_order}(init+D20:{char.turn_order - char.initiative}), "
+            text += f"{char.name} ({char.turn_order}+{char.turn_order - char.initiative}), "
         return text

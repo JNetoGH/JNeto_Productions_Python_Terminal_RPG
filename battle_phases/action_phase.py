@@ -8,7 +8,9 @@ class ActionPhase:
         self.initiative_phase = initiative_phase
         self.squad1 = self.initiative_phase.squad1
         self.squad2 = self.initiative_phase.squad2
+        # used for action order control: char will be removed if dead o if has already played
         self.action_order_list: list[Character] = self.initiative_phase.action_order_list
+        # used for combat: chars will not be removed
         self.all_chars = self.action_order_list.copy()
 
         self.force_skip = False
