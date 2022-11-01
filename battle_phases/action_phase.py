@@ -35,6 +35,7 @@ class ActionPhase:
                 print()
                 continue
             elif self.force_quit_battle:
+                os.system("cls")
                 break
             else:
                 input("press any key to next turn")

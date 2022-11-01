@@ -1,6 +1,7 @@
 from battle_entities.char_and_squad import Squad, Ownership
 from battle_phases.initiative_phase import InitiativePhase
 from battle_phases.action_phase import ActionPhase
+from ui import battle_stats
 
 
 class Round:
@@ -22,17 +23,20 @@ class Battle:
                 print("exit battle")
                 break
             elif current_round.actionPhase.is_there_a_winner() != Ownership.NULL:
-                if current_round.actionPhase.is_there_a_winner() == Ownership.PLAYER:
-                    print("player venceu")
-                elif current_round.actionPhase.is_there_a_winner() == Ownership.ENEMY:
-                    print("enemy venceu")
                 break
             else:
                 print("action order list is empty")
                 print("another list will be generated")
                 input("press any key to generate another round")
 
-        print("Battle finished")
+        print()
+        print(battle_stats.get_battle_current_state(current_round.initiativePhase), end="")
+        print()
+        if current_round.actionPhase.is_there_a_winner() == Ownership.PLAYER:
+            print("player venceu!!!!!!")
+        elif current_round.actionPhase.is_there_a_winner() == Ownership.ENEMY:
+            print("Enemy venceu!!!!!")
+        print("Battle finished!!!!!")
 
 
 
