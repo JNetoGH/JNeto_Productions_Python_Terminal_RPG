@@ -13,7 +13,7 @@ class ActionPhase:
         # used for action order control: char will be removed if dead o if has already played
         self.action_order_list: list[Character] = self.initiative_phase.action_order_list
         # used for combat: chars will not be removed
-        self.all_living_chars = self.action_order_list.copy()
+        self.all_chars = self.action_order_list.copy()
 
         self.force_skip = False
         self.force_quit_battle = False
@@ -67,7 +67,7 @@ class ActionPhase:
             elif chosen_char_name == "Quit":
                 self.force_quit_battle = True
                 return
-            for char in self.all_living_chars:
+            for char in self.all_chars:
                 if char.name.capitalize() == chosen_char_name:
                     other_char = char
             if other_char is None:
