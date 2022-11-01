@@ -11,11 +11,14 @@ class ActionPhase:
         self.action_order_list: list[Character] = self.initiative_phase.action_order_list
         self.all_chars = self.action_order_list.copy()
 
+        self.force_skip = False
         counter = 0
         while self.is_there_a_winner() == Ownership.NULL and len(self.action_order_list) != 0:
             if len(self.action_order_list) != 0:
                 current_char = self.action_order_list[0]
                 self._run_action_turn(current_char)
+                if self.force_skip:
+                    break
                 self.remove_a_char_from_action_order_list(current_char)
                 self.remove_dead_chars_from_action_order_list()
                 print(ui.battle_stats.get_battle_current_state(self.initiative_phase), end="")
@@ -69,10 +72,16 @@ class ActionPhase:
         # picks an alive char only
         other_char: Character = None
         while other_char is None:
+
             chosen_char_name = input(f"Which char should {current_char.name} pick?: ").capitalize()
+            if chosen_char_name == "Quit":
+                self.force_skip = True
+                return
+
             for char in self.all_chars:
                 if char.name.capitalize() == chosen_char_name:
                     other_char = char
+
             if other_char is current_char:
                 print("invalid, nao pode inflingir dano a si mesmo")
                 other_char = None
