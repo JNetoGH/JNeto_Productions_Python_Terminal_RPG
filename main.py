@@ -2,12 +2,12 @@ import os
 from battle_entities.char_and_squad import Character, Squad, Ownership
 from battle_phases.round_and_battle_management import Battle
 
-os.system("cls")
+os.system("clear")
 print()
 print("RULES:\n - YOU CAN ATTACK CHARS IN YOU SQUAD IT'S OKAY! \n - A CHAR CAN'T ATK ITSELF")
 print()
 input("press any key to continue")
-os.system("cls")
+os.system("clear")
 print()
 
 squad1 = Squad(Ownership.PLAYER, "player squad", [Character("joao", 10, 15, 5, 20, 10),
