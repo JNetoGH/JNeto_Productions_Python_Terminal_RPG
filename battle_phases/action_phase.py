@@ -12,7 +12,7 @@ class ActionPhase:
         self.all_chars = self.action_order_list.copy()
 
         counter = 0
-        while self.is_there_a_winner() == Ownership.NULL or len(self.action_order_list) != 0:
+        while self.is_there_a_winner() == Ownership.NULL and len(self.action_order_list) != 0:
             if len(self.action_order_list) != 0:
                 current_char = self.action_order_list[0]
                 self._run_action_turn(current_char)
@@ -25,7 +25,7 @@ class ActionPhase:
         elif self.is_there_a_winner() == Ownership.ENEMY:
             print("enemy venceu")
         elif self.is_there_a_winner() == Ownership.NULL:
-            print("algo de estranhoa conteceu")
+            print("algo de estranho aconteceu")
 
     def is_there_a_winner(self) -> Ownership:
         is_squad1_all_dead = True
@@ -33,13 +33,13 @@ class ActionPhase:
             if not(char.is_dead()):
                 is_squad1_all_dead = False
         if is_squad1_all_dead:
-            return self.squad1.ownership
+            return self.squad2.ownership
         is_squad2_all_dead = True
         for char in self.squad2.list_of_char:
             if not(char.is_dead()):
                 is_squad2_all_dead = False
         if is_squad2_all_dead:
-            return self.squad2.ownership
+            return self.squad1.ownership
         return Ownership.NULL
 
     def remove_dead_chars_from_action_order_list(self) -> bool:
