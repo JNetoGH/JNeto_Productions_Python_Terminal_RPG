@@ -28,6 +28,8 @@ class ActionPhase:
             # ActionPhase flow control
             if self.force_skip:
                 self.force_skip = False
+                os.system("cls")
+                print()
                 continue
             elif self.force_quit_battle:
                 break
