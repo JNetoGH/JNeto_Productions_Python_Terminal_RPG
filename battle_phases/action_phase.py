@@ -15,7 +15,7 @@ class ActionPhase:
         # used for combat: chars will not be removed
         self._all_chars = self.action_order_list.copy()
 
-        self.force_skip = False
+        self._force_skip_turn = False
         self.force_quit_battle = False
 
         # while action_order_list is not empty and there is no winner
@@ -32,8 +32,8 @@ class ActionPhase:
             self.remove_dead_chars_from_action_order_list()
             # ActionPhase flow control: checks for skips and breaks, if there is none, cleans the screen to next
             # char, if there is any
-            if self.force_skip:
-                self.force_skip = False
+            if self._force_skip_turn:
+                self._force_skip_turn = False
                 os.system("cls")
                 print()
                 continue
@@ -62,7 +62,7 @@ class ActionPhase:
         while other_char is None:
             chosen_char_name = input(f"Which char should {current_char.name} pick? (skip/quit are valid): ").capitalize()
             if chosen_char_name == "Skip":
-                self.force_skip = True
+                self._force_skip_turn = True
                 return
             elif chosen_char_name == "Quit":
                 self.force_quit_battle = True
