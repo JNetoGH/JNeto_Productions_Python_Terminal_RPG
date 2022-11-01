@@ -34,16 +34,16 @@ class ActionPhase:
             # char, if there is any
             if self.force_skip:
                 self.force_skip = False
-                os.system("clear")
+                os.system("cls")
                 print()
                 continue
             elif self.force_quit_battle:
-                os.system("clear")
+                os.system("cls")
                 break
             else:
                 input("press any key to next turn")
             # cleans the screen for the next ui
-            os.system("clear")
+            os.system("cls")
             print()
 
     def _run_action_turn_for_char(self, char: Character):
