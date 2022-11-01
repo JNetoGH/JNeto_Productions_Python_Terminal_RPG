@@ -4,9 +4,9 @@ from battle_phases.action_phase import ActionPhase
 
 
 class Round:
-    def __init__(self, initiativePhase: InitiativePhase):
-        self.initiativePhase = initiativePhase
-        self.actionPhase = ActionPhase(initiativePhase)
+    def __init__(self, squad1: Squad, squad2: Squad):
+        self.initiativePhase = InitiativePhase(squad1, squad2)
+        self.actionPhase = ActionPhase(self.initiativePhase)
 
 
 class Battle:
@@ -16,7 +16,7 @@ class Battle:
 
         while True:
 
-            current_round = Round(InitiativePhase(squad1, squad2))
+            current_round = Round(squad1, squad2)
 
             if current_round.actionPhase.force_quit_battle:
                 print("exit battle")
