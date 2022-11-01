@@ -1,3 +1,5 @@
+import os
+
 import ui.battle_stats
 from battle_entities.char_and_squad import Character, Ownership
 from battle_phases.initiative_phase import InitiativePhase
@@ -23,6 +25,7 @@ class ActionPhase:
                     break
                 self.remove_a_char_from_action_order_list(current_char)
                 self.remove_dead_chars_from_action_order_list()
+                os.system("cls")
                 print(ui.battle_stats.get_battle_current_state(self.initiative_phase), end="")
 
         if self.is_there_a_winner() == Ownership.PLAYER:
@@ -68,7 +71,7 @@ class ActionPhase:
     def _player_action(self, current_char: Character):
 
         # prints the current char
-        print(f"TURN: {current_char.name}")
+        print(f"\nTURN: {current_char.name}")
         print(ui.battle_stats.get_char_card(current_char))
 
         # picks an alive char only
@@ -85,13 +88,13 @@ class ActionPhase:
                     other_char = char
 
             if other_char is current_char:
-                print("invalid, nao pode inflingir dano a si mesmo")
+                print("invalid, a char can't atk itself")
                 other_char = None
             elif other_char.is_dead():
-                print(f"invalid, {other_char} is already dead")
+                print(f"invalid, {other_char.name} is already dead")
                 other_char = None
             elif other_char is None:
-                print("invalid char does not exist")
+                print(f"invalid {chosen_char_name} does not exist")
 
         # makes the atk and remove the char if its dead
         dmg = ActionPhase._physical_atk(current_char, other_char)
@@ -112,5 +115,6 @@ class ActionPhase:
 
     def _ai_action(self):
         print("ai action")
+        input("press any key to continue")
 
 
