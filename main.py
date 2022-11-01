@@ -18,13 +18,4 @@ squad2 = Squad(Ownership.ENEMY, "enemy squad", [Character("Monstrinho", 1, 2, 2,
                                                 Character("Lobao", 3, 2, 3, 100, 10),
                                                 Character("Morcego", 1, 2, 2, 100, 10)])
 
-rounds_manager = Battle(squad1, squad2)
-
-"""
-initiative_phase = InitiativePhase(squad1, squad2)
-action_phase = ActionPhase(initiative_phase)
-"""
-"""
-print(squad1.list_of_char[0].to_string())
-print(squad2.to_string())
-"""
+battle = Battle(squad1, squad2)

@@ -38,6 +38,3 @@ class Battle:
             print("Enemy venceu!!!!!")
         print("Battle finished!!!!!")
 
-
-
-
