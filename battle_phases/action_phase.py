@@ -87,14 +87,15 @@ class ActionPhase:
                 if char.name.capitalize() == chosen_char_name:
                     other_char = char
 
-            if other_char is current_char:
-                print("invalid, a char can't atk itself")
+            if other_char is None:
+                print(f"invalid input, {chosen_char_name} does not exist")
+            elif other_char is current_char:
+                print("invalid input, a char can't atk itself")
                 other_char = None
             elif other_char.is_dead():
-                print(f"invalid, {other_char.name} is already dead")
+                print(f"invalid input, {other_char.name} is already dead")
                 other_char = None
-            elif other_char is None:
-                print(f"invalid {chosen_char_name} does not exist")
+
 
         # makes the atk and remove the char if its dead
         dmg = ActionPhase._physical_atk(current_char, other_char)
