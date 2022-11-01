@@ -27,7 +27,8 @@ class ActionPhase:
             self.remove_a_char_from_action_order_list(current_char)
             # removes all dead chars from the action order list th
             self.remove_dead_chars_from_action_order_list()
-            # ActionPhase flow control: checks for skips and breaks, if there is none, cleans the screen to next char, if there is any
+            # ActionPhase flow control: checks for skips and breaks, if there is none, cleans the screen to next
+            # char, if there is any
             if self.force_skip:
                 self.force_skip = False
                 os.system("cls")
