@@ -32,7 +32,6 @@ class Battle:
                 print("action_order_list is empty")
                 print("another round will be generated")
                 input("press any key to generate another round")
-                input()
 
         print("Battle finished")
 
