@@ -84,6 +84,10 @@ class ActionPhase:
         print(f"{current_char.name} attacked {other_char.name}: tot dmg = {dmg}")
         print()
 
+    def _ai_action(self, char: Character):
+        print("\nai action no implemented yet, using same system as player")
+        self._player_action(char)
+
     @staticmethod
     def _physical_atk(charAtk: Character, charDef: Character):  # used in_player_action() and _ai_cation()
         dmg: int = charAtk.weapon_dmg - charDef.armor
@@ -91,10 +95,6 @@ class ActionPhase:
             dmg = 0
         charDef.health -= dmg
         return dmg
-
-    def _ai_action(self, char: Character):
-        print("\nai action no implemented yet, using same system as player")
-        self._player_action(char)
 
     def remove_a_char_from_action_order_list(self, char: Character) -> bool:
         if char in self.action_order_list:
