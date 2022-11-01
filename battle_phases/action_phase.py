@@ -16,7 +16,9 @@ class ActionPhase:
 
         self.force_skip = False
         self.force_quit_battle = False
-        while len(self.action_order_list) != 0 and self.is_there_a_winner() == Ownership.NULL:  # while action_order_list is not empty and there is no winner
+
+        # while action_order_list is not empty and there is no winner
+        while len(self.action_order_list) != 0 and self.is_there_a_winner() == Ownership.NULL:
             # prints Ui
             print(ui.battle_stats.get_battle_current_state(self.initiative_phase), end="")
             # sets the current char according to the action order list
