@@ -6,8 +6,8 @@ from battle_phases.initiative_phase import InitiativePhase
 print()
 print("RULES:\n - YOU CAN ATTACK CHARS IN YOU SQUAD IT'S OKAY! \n - A CHAR CAN'T ATK ITSELF")
 
-squad1 = Squad(Ownership.PLAYER, "player squad", [Character("joao", 10, 15, 5, 20, 10), Character("Dani", 10, 15, 2, 20, 10), Character("Lulu", 0, 5, 5, 5, 10)])
-squad2 = Squad(Ownership.ENEMY, "enemy squad", [Character("Monstrinho", 0, 85, 115, 5, 10), Character("Lobao", 10, 2, 3, 5, 10), Character("Morcego", 0, 5, 5, 5, 10)])
+squad1 = Squad(Ownership.PLAYER, "player squad", [Character("joao", 10, 15, 5, 20, 10), Character("Dani", 10, 15, 2, 20, 10), Character("Lulu", 1, 5, 5, 5, 10)])
+squad2 = Squad(Ownership.ENEMY, "enemy squad", [Character("Monstrinho", 1, 85, 115, 5, 10), Character("Lobao", 10, 2, 3, 5, 10), Character("Morcego", 1, 5, 5, 5, 10)])
 initiative_phase = InitiativePhase(squad1, squad2)
 
 print()

@@ -107,12 +107,12 @@ def get_centralized_txt_in_line(line_length: int, msg: str = "Default", wall1: s
 def get_battle_current_state(initiative_phase) -> str:
     separators_length = 78
     state = ""
-    state += "═" * separators_length + "\n"
+    state += "━" * separators_length + "\n"
     state += initiative_phase.to_string() +"\n"
     state += "─" * separators_length + "\n"
     state += initiative_phase.squad1.to_string() + "\n"
     state += get_centralized_txt_in_line(separators_length, "«VS»") + "\n"
     state += initiative_phase.squad2.to_string() + "\n"
-    state += "═" * separators_length + "\n"
+    state += "━" * separators_length + "\n"
     return state
 
