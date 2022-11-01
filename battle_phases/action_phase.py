@@ -115,7 +115,7 @@ class ActionPhase:
 
 
     def _ai_action(self):
-        print("ai action")
+        print("\nai action")
         input("press any key to continue")
 
 
