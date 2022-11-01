@@ -10,8 +10,8 @@ class CharCodes(enum.Enum):
 class InitiativePhase:
 
     def __init__(self, squad1: Squad, squad2: Squad):
-        self.squad1: Squad = squad1
-        self.squad2: Squad = squad2
+        self.squad1 = squad1
+        self.squad2 = squad2
         self.action_order_list: list[Character] = []  # this class just exists in order to generate this list
         self._generate_turn_orders_of_a_squad(self.squad1)
         self._generate_turn_orders_of_a_squad(self.squad2)
@@ -48,7 +48,7 @@ class InitiativePhase:
             self.action_order_list[hole] = val  # insert value into correct position
 
     def to_string(self) -> str:
-        text = "ACTION ORDER: \n| "
+        text = "ACTION ORDER: \n"
         for char in self.action_order_list:
-            text += f"{char.name}: {char.turn_order}(init+D20:{char.turn_order - char.initiative}) | "
+            text += f"{char.name} {char.turn_order}(init+D20:{char.turn_order - char.initiative}), "
         return text

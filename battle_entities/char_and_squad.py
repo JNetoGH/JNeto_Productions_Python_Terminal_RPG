@@ -11,7 +11,7 @@ class Ownership(enum.Enum):
 class Character:
 
     def __init__(self, name: str, health: int, mana: int, armor: int, weapon_dmg: int, initiative: int):
-        self.name = name
+        self.name = name.capitalize()
         self.health = health
         self.mana = mana
         self.armor = armor
@@ -24,7 +24,7 @@ class Character:
         return self.health <= 0
 
     def to_string(self) -> str:
-        return get_char_card(self, GENERAL_LINE_LENGTH)
+        return get_char_card(self, GENERAL_CARD_LENGTH)
 
 
 class Squad:
@@ -35,9 +35,9 @@ class Squad:
         self.ownership = ownership
         self._set_chars_ownership_to_same_as_squad()
 
-    def _set_chars_ownership_to_same_as_squad(self):
+    def _set_chars_ownership_to_same_as_squad(self) -> None:
         for char in self.list_of_char:
             char.ownership = self.ownership
 
     def to_string(self) -> str:
-        return get_squad_char_cards_inline(self, GENERAL_LINE_LENGTH)
+        return get_squad_char_cards_inline(self, GENERAL_CARD_LENGTH, GENERAL_CARD_PADDING)
