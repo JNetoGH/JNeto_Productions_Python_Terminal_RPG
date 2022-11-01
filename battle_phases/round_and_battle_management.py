@@ -21,8 +21,7 @@ class Battle:
             if current_round.actionPhase.force_quit_battle:
                 print("exit battle")
                 break
-
-            if current_round.actionPhase.is_there_a_winner() != Ownership.NULL:
+            elif current_round.actionPhase.is_there_a_winner() != Ownership.NULL:
                 if current_round.actionPhase.is_there_a_winner() == Ownership.PLAYER:
                     print("player venceu")
                 elif current_round.actionPhase.is_there_a_winner() == Ownership.ENEMY:
