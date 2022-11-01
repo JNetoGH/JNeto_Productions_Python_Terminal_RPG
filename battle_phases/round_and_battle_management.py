@@ -29,8 +29,8 @@ class Battle:
                     print("enemy venceu")
                 break
             else:
-                print("action_order_list is empty")
-                print("another round will be generated")
+                print("action order list is empty")
+                print("another list will be generated")
                 input("press any key to generate another round")
 
         print("Battle finished")
