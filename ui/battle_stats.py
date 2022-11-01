@@ -105,14 +105,27 @@ def get_centralized_txt_in_line(line_length: int, msg: str = "Default", wall1: s
 
 
 def get_battle_current_state(initiative_phase) -> str:
-    separators_length = 78
-    state = ""
-    state += "━" * separators_length + "\n"
-    state += initiative_phase.to_string() +"\n"
-    state += "─" * separators_length + "\n"
+    separators_length = 76
+
+    # Action order list treatment part1
+    esapco_util = separators_length - 6
+    action_order_list_txt = initiative_phase.to_string()
+    treated_list_text = []
+    temp_text = ""
+    for i in range(0, len(action_order_list_txt)):
+        temp_text += action_order_list_txt[i]
+        if not(i == 0) and not(i == 1) and i % esapco_util == 0:
+            treated_list_text.append(temp_text)
+            temp_text = ""
+
+    state = "┏" + "━" * separators_length + "┓" + "\n"
+    # Action order list treatment part2
+    for line in treated_list_text:
+        state += get_centralized_txt_in_line(separators_length+2, line, "┃", "┃") +"\n"
+    state += "┗" + "━" * separators_length + "┛" + "\n"
     state += initiative_phase.squad1.to_string() + "\n"
-    state += get_centralized_txt_in_line(separators_length, "«VS»") + "\n"
+    state += get_centralized_txt_in_line(78, "«VS»") + "\n"
     state += initiative_phase.squad2.to_string() + "\n"
-    state += "━" * separators_length + "\n"
+    state += "━" * (separators_length+2) + "\n"
     return state
 
