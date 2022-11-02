@@ -1,7 +1,7 @@
 import os
 import ui.battle_stats
 from battle_entities.char_and_squad import Character, Squad, Ownership
-from battle_phases.initiative_phase import InitiativePhase
+from battle_core.initiative_phase import InitiativePhase
 
 
 class ActionPhase:

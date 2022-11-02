@@ -1,6 +1,6 @@
 import os
 from battle_entities.char_and_squad import Character, Squad, Ownership
-from battle_phases.round_and_battle_management import Battle
+from battle_core.round_and_battle_management import Battle
 
 os.system("cls")
 print()

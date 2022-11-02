@@ -1,6 +1,6 @@
 from battle_entities.char_and_squad import Squad, Ownership
-from battle_phases.initiative_phase import InitiativePhase
-from battle_phases.action_phase import ActionPhase
+from battle_core.initiative_phase import InitiativePhase
+from battle_core.action_phase import ActionPhase
 from ui import battle_stats
 
 
