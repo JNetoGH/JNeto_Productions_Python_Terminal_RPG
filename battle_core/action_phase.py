@@ -108,9 +108,9 @@ class ActionPhase:
                 return True
 
     def is_there_a_winner(self) -> Ownership:
-        if ActionPhase._is_squad_all_dead(self.squad1):
+        if ActionPhase.is_squad_all_dead(self.squad1):
             return self.squad2.ownership
-        elif ActionPhase._is_squad_all_dead(self.squad2):
+        elif ActionPhase.is_squad_all_dead(self.squad2):
             return self.squad1.ownership
         return Ownership.NULL
 
