@@ -115,7 +115,7 @@ class ActionPhase:
         return Ownership.NULL
 
     @staticmethod
-    def _is_squad_all_dead(squad: Squad) -> bool:  # used in is_there_a_winner()
+    def is_squad_all_dead(squad: Squad) -> bool:  # used in is_there_a_winner()
         is_squad_all_dead = True
         for char in squad.list_of_char:
             if not (char.is_dead()):
