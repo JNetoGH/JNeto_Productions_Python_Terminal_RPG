@@ -1,5 +1,6 @@
 import os
 import ui.battle_stats
+from battle_core.action import Action, KindOfAction
 from battle_entities.char_and_squad import Character, Squad, Ownership
 from battle_core.initiative_phase import InitiativePhase
 
@@ -58,8 +59,8 @@ class ActionPhase:
         print(f"\nTURN: {current_char.name}")
         print(ui.battle_stats.get_char_card(current_char))
         # picks an alive char only
-        other_char: Character = None
-        while other_char is None:
+        target_char: Character = None
+        while target_char is None:
             chosen_char_name = input(f"Which char should {current_char.name} pick? (skip/quit are valid): ").capitalize()
             if chosen_char_name == "Skip":
                 self._force_skip_turn = True
@@ -69,32 +70,25 @@ class ActionPhase:
                 return
             for char in self._all_chars:
                 if char.name.capitalize() == chosen_char_name:
-                    other_char = char
-            if other_char is None:
+                    target_char = char
+            if target_char is None:
                 print(f"invalid input, {chosen_char_name} does not exist")
-            elif other_char is current_char:
+            elif target_char is current_char:
                 print("invalid input, a char can't atk itself")
-                other_char = None
-            elif other_char.is_dead():
-                print(f"invalid input, {other_char.name} is already dead")
-                other_char = None
+                target_char = None
+            elif target_char.is_dead():
+                print(f"invalid input, {target_char.name} is already dead")
+                target_char = None
         # makes the atk action
-        dmg = ActionPhase._physical_atk(current_char, other_char)
+        action = Action(current_char, target_char, KindOfAction.PHYSICAL_DMG)
+        dmg = action.dmg_dealt
         # prints battle current state
-        print(f"{current_char.name} attacked {other_char.name}: tot dmg = {dmg}")
+        print(f"{current_char.name} attacked {target_char.name}: tot dmg = {dmg}")
         print()
 
     def _ai_action(self, char: Character) -> None:
         print("\nai action no implemented yet, using same system as player")
         self._player_action(char)
-
-    @staticmethod
-    def _physical_atk(charAtk: Character, charDef: Character) -> int:  # used in_player_action() and _ai_cation()
-        dmg: int = charAtk.weapon_dmg - charDef.armor
-        if dmg < 0:
-            dmg = 0
-        charDef.health -= dmg
-        return dmg
 
     def remove_a_char_from_action_order_list(self, char: Character) -> bool:
         if char in self.action_order_list:

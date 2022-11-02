@@ -10,6 +10,7 @@ input("press any key to continue")
 os.system("cls")
 print()
 
+
 squad1 = Squad(Ownership.PLAYER, "player squad", [Character("joao", 10, 15, 5, 20, 10),
                                                   Character("Dani", 10, 15, 2, 20, 10),
                                                   Character("Lulu", 1, 5, 5, 50, 10)])

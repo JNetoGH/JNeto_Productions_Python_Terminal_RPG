@@ -1,4 +1,5 @@
 import enum
+from battle_habilities.Spells import Spell
 from ui.battle_stats import *
 
 
@@ -10,7 +11,7 @@ class Ownership(enum.Enum):
 
 class Character:
 
-    def __init__(self, name: str, health: int, mana: int, armor: int, weapon_dmg: int, initiative: int):
+    def __init__(self, name: str, health: int, mana: int, armor: int, weapon_dmg: int, initiative: int, spells: list[Spell] = None):
         self.name = name.capitalize()
         self.health = health
         self.mana = mana
@@ -19,6 +20,7 @@ class Character:
         self.initiative = initiative
         self.turn_order = 0
         self.ownership: Ownership = Ownership.NULL
+        self.spells = spells
 
     def is_dead(self) -> bool:
         return self.health <= 0

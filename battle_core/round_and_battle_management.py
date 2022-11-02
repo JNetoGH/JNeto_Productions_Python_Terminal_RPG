@@ -14,11 +14,8 @@ class Battle:
     def __init__(self, squad1: Squad, squad2: Squad):
 
         current_round = None
-
         while True:
-
             current_round = Round(squad1, squad2)
-
             if current_round.actionPhase.force_quit_battle:
                 print("exit battle")
                 break
