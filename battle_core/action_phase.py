@@ -46,14 +46,14 @@ class ActionPhase:
             os.system("cls")
             print()
 
-    def _run_action_turn_for_char(self, char: Character):
+    def _run_action_turn_for_char(self, char: Character) -> None:
         if char.ownership == Ownership.PLAYER:
             self._player_action(char)
         elif char.ownership == Ownership.ENEMY:
             self._ai_action(char)
         print()  # jumps a line
 
-    def _player_action(self, current_char: Character):
+    def _player_action(self, current_char: Character) -> None:
         # prints the current char
         print(f"\nTURN: {current_char.name}")
         print(ui.battle_stats.get_char_card(current_char))
@@ -84,12 +84,12 @@ class ActionPhase:
         print(f"{current_char.name} attacked {other_char.name}: tot dmg = {dmg}")
         print()
 
-    def _ai_action(self, char: Character):
+    def _ai_action(self, char: Character) -> None:
         print("\nai action no implemented yet, using same system as player")
         self._player_action(char)
 
     @staticmethod
-    def _physical_atk(charAtk: Character, charDef: Character):  # used in_player_action() and _ai_cation()
+    def _physical_atk(charAtk: Character, charDef: Character) -> int:  # used in_player_action() and _ai_cation()
         dmg: int = charAtk.weapon_dmg - charDef.armor
         if dmg < 0:
             dmg = 0
@@ -115,7 +115,7 @@ class ActionPhase:
         return Ownership.NULL
 
     @staticmethod
-    def _is_squad_all_dead(squad: Squad):  # used in is_there_a_winner()
+    def _is_squad_all_dead(squad: Squad) -> bool:  # used in is_there_a_winner()
         is_squad_all_dead = True
         for char in squad.list_of_char:
             if not (char.is_dead()):
