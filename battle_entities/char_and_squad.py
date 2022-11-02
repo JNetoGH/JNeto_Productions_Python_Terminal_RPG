@@ -1,5 +1,5 @@
 import enum
-from battle_habilities.Spells import Spell
+from battle_abilities.Spells import Spell
 from ui.battle_stats import *
 
 
