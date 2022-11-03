@@ -1,5 +1,5 @@
 import enum
-from battle_abilities.Spells import Spell
+from battle_abilities.spells import Spell
 from ui.battle_stats import *
 
 
@@ -24,6 +24,17 @@ class Character:
 
     def is_dead(self) -> bool:
         return self.health <= 0
+
+    def have_spells(self) -> bool:
+        has = False
+        if not (self.spells is None) and isinstance(self.spells, list):
+            if len(self.spells) > 0:
+                is_filled_only_with_spells = True
+                for spell in self.spells:
+                    if not(isinstance(spell, Spell)):
+                        is_filled_only_with_spells = False
+                has = is_filled_only_with_spells
+        return has
 
     def to_string(self) -> str:
         return get_char_card(self, GENERAL_CARD_LENGTH)
