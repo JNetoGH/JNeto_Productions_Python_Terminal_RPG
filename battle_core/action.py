@@ -25,7 +25,7 @@ class Action:
 
     def _physical_atk(self, charAtk: Character, charDef: Character) -> None:
         dmg = charAtk.weapon_dmg - charDef.armor
-        self.dmg_dealt = Action._deal_dmg(charAtk, dmg)
+        self.dmg_dealt = Action._deal_dmg(charDef, dmg)
 
     def _launch_single_spell(self, charCaster: Character, charTarget: Character, spell: Spell) -> None:
         if charCaster.mana < spell.mana_cost:

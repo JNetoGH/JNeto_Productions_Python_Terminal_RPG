@@ -57,7 +57,7 @@ class ActionPhase:
 
             action_kind = input(f"What should {current_char.name} do? [1:Atk] [2:Spell] [3:Skip] [4:Quit]: ")
 
-            if action_kind.capitalize() == "Atk" or action_kind == "1":  # todo por return igual no spell
+            if action_kind.capitalize() == "Atk" or action_kind == "1":                                                 # todo por return igual o do spell
                 target_char: Character = self._get_a_character_from_player(current_char, can_pick_itself=False)
                 action = Action(current_char, target_char, PhysicalAtk(Range.SINGLE))
                 dmg = action.dmg_dealt
