@@ -57,15 +57,7 @@ class ActionPhase:
 
             action_kind = input(f"What should {current_char.name} do? [1:Atk] [2:Spell] [3:Skip] [4:Quit]: ")
 
-            if action_kind.capitalize() == "Skip" or action_kind == "3":
-                self._force_skip_turn = True
-                action_done = True
-
-            elif action_kind.capitalize() == "Quit" or action_kind == "4":
-                self.force_quit_battle = True
-                action_done = True
-
-            elif action_kind.capitalize() == "Atk" or action_kind == "1":  # todo por return igual no spell
+            if action_kind.capitalize() == "Atk" or action_kind == "1":  # todo por return igual no spell
                 target_char: Character = self._get_a_character_from_player(current_char, can_pick_itself=False)
                 action = Action(current_char, target_char, PhysicalAtk(Range.SINGLE))
                 dmg = action.dmg_dealt
@@ -82,6 +74,14 @@ class ActionPhase:
                     except:
                         print(f"{current_char.name} doesn't have enough mana ({current_char.mana}) to cast "
                               f"{spell.name} (cost:{spell.mana_cost})")
+
+            elif action_kind.capitalize() == "Skip" or action_kind == "3":
+                self._force_skip_turn = True
+                action_done = True
+
+            elif action_kind.capitalize() == "Quit" or action_kind == "4":
+                self.force_quit_battle = True
+                action_done = True
 
     @staticmethod
     def _get_a_valid_spell_in_char_from_player_or_return_code(current_char: Character) -> Union[Spell, int]:

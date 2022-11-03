@@ -12,7 +12,6 @@ class Round:
 
 class Battle:
     def __init__(self, squad1: Squad, squad2: Squad):
-
         current_round = None
         while True:
             current_round = Round(squad1, squad2)
