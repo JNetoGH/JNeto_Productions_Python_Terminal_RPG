@@ -48,8 +48,9 @@ def get_char_card(char, line_length: int = GENERAL_CARD_LENGTH) -> str:
 
 def get_squad_char_cards_inline(squad, line_length: int = GENERAL_CARD_LENGTH, padding: int = GENERAL_SEPARATORS_LENGTH) -> str:
     squad_char_cards_inline = ""
-    for i in range(0, 9):
-        add_line_break = i != 8
+    tot_lines = 9
+    for i in range(0, tot_lines):
+        add_line_break = i != tot_lines-1
         squad_char_cards_inline += _get_char_card_squad_line(squad, i, line_length, padding, add_line_break)
     return squad_char_cards_inline
 
