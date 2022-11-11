@@ -1,5 +1,5 @@
 import os
-import ui.battle_stats
+from ui import ui_resources, battle_stats
 from typing import Union
 from battle_abilities.ability import Range
 from battle_abilities.physical_atk import PhysicalAtk
@@ -22,22 +22,22 @@ class ActionPhase:
         self.force_quit_battle = False
 
         while len(self.action_order_list) != 0 and self.is_there_a_winner() == Ownership.NULL:                          # while action_order_list is not empty and there is no winner
-            print(ui.battle_stats.get_battle_current_state(self.initiative_phase), end="")                              # prints Ui
+            print(battle_stats.get_battle_current_state(self.initiative_phase), end="")                              # prints Ui
             current_char = self.action_order_list[0]                                                                    # sets the current char according to the action order list
             self._run_action_turn_for_char(current_char)                                                                # runs action of the current char user/AI based
             self.remove_a_char_from_action_order_list(current_char)                                                     # removes from the action order list the current char, passing the action to the next on if the is any
             self.remove_dead_chars_from_action_order_list()                                                             # removes all dead chars from the action order list th
             if self._force_skip_turn:                                                                                   # ActionPhase flow control: checks for skips and breaks, if there is none, cleans the screen to next char, if there is any
                 self._force_skip_turn = False
-                os.system("cls")
+                ui_resources.clear_terminal()
                 print()
                 continue
             elif self.force_quit_battle:
-                os.system("cls")
+                ui_resources.clear_terminal()
                 break
             else:
                 input("press any key to next turn")
-            os.system("cls")                                                                                            # clears the screen for the next ui
+            ui_resources.clear_terminal()                                                                                            # clears the screen for the next ui
             print()
 
     def _run_action_turn_for_char(self, char: Character) -> None:
@@ -50,7 +50,7 @@ class ActionPhase:
     def _player_action(self, current_char: Character) -> None:
 
         print(f"\nTURN: {current_char.name}")
-        print(ui.battle_stats.get_char_card(current_char))  # prints the current char card
+        print(battle_stats.get_char_card(current_char))  # prints the current char card
 
         action_done = False
         while not action_done:

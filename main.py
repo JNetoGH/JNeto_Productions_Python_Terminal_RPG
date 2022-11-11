@@ -1,15 +1,16 @@
 import os
+from ui import ui_resources
 from battle_abilities.spells import DmgSpell, HealingSpell
 from battle_abilities.ability import Range
 from battle_entities.char_and_squad import Character, Squad, Ownership
 from battle_core.round_and_battle_management import Battle
 
-os.system("cls")
+ui_resources.clear_terminal()
 print()
 print("RULES:\n - YOU CAN ATTACK CHARS IN YOU SQUAD IT'S OKAY! \n - A CHAR CAN'T ATK ITSELF")
 print()
 input("press any key to continue")
-os.system("cls")
+ui_resources.clear_terminal()
 print()
 
 dmg_spell = DmgSpell("dano brabo", "da dano", 5, mana_cost=3, range_type=Range.SINGLE)
