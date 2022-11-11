@@ -67,6 +67,7 @@ class ActionPhase:
                 spell = ActionPhase._get_a_valid_spell_in_char_from_player_or_return_code(current_char)
                 if isinstance(spell, Spell):  # in case the player has chosen return spell won't be a Spell, will be -1
                     try:
+                        # todo can_pick_itself=isinstance(spell, HealingSpell) para um atributo em spell
                         target_char = self._get_a_target_by_name_from_player(current_char, can_pick_itself=isinstance(spell, HealingSpell))
                         action = Action(current_char, target_char, spell)
                         action_done = True
