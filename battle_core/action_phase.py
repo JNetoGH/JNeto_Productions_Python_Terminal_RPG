@@ -1,4 +1,3 @@
-import os
 from ui import ui_resources, battle_stats
 from typing import Union
 from battle_abilities.ability import Range
@@ -58,7 +57,7 @@ class ActionPhase:
             action_kind = input(f"What should {current_char.name} do? [1:Atk] [2:Spell] [3:Skip] [4:Quit]: ")
 
             if action_kind.capitalize() == "Atk" or action_kind == "1":                                                 # todo por return igual o do spell
-                target_char: Character = self._get_a_character_from_player(current_char, can_pick_itself=False)
+                target_char: Character = self._get_a_target_by_name_from_player(current_char, can_pick_itself=False)
                 action = Action(current_char, target_char, PhysicalAtk(Range.SINGLE))
                 dmg = action.dmg_dealt
                 print(f"{current_char.name} attacked {target_char.name}: tot dmg = {dmg}\n")
@@ -68,7 +67,7 @@ class ActionPhase:
                 spell = ActionPhase._get_a_valid_spell_in_char_from_player_or_return_code(current_char)
                 if isinstance(spell, Spell):  # in case the player has chosen return spell won't be a Spell, will be -1
                     try:
-                        target_char = self._get_a_character_from_player(current_char, can_pick_itself=isinstance(spell, HealingSpell))
+                        target_char = self._get_a_target_by_name_from_player(current_char, can_pick_itself=isinstance(spell, HealingSpell))
                         action = Action(current_char, target_char, spell)
                         action_done = True
                     except:
@@ -112,7 +111,7 @@ class ActionPhase:
             count += 1
         print("--------------------------------------")
 
-    def _get_a_character_from_player(self, current_char: Character, can_pick_itself: bool) -> Character:
+    def _get_a_target_by_name_from_player(self, current_char: Character, can_pick_itself: bool) -> Character:
         target_char: Character = None
         while target_char is None:
             chosen_char_name = input(f"Which char should {current_char.name} pick?: ").capitalize()

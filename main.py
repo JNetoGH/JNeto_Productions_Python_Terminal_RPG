@@ -1,9 +1,11 @@
 import os
-from ui import ui_resources
+from ui import ui_resources, title_screen
 from battle_abilities.spells import DmgSpell, HealingSpell
 from battle_abilities.ability import Range
 from battle_entities.char_and_squad import Character, Squad, Ownership
 from battle_core.round_and_battle_management import Battle
+
+title_screen.execute()
 
 ui_resources.clear_terminal()
 print()
