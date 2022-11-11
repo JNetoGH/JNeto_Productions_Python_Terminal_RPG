@@ -39,6 +39,12 @@ def get_char_card(char, line_length: int = GENERAL_CARD_LENGTH) -> str:
     card += get_centralized_txt_in_line(line_length, f"Mana: {char.mana}", GENERAL_WALL, GENERAL_WALL) + "\n"
     card += get_centralized_txt_in_line(line_length, f"Armor: {char.armor}", GENERAL_WALL, GENERAL_WALL) + "\n"
     card += get_centralized_txt_in_line(line_length, f"Initiative: {char.initiative}", GENERAL_WALL, GENERAL_WALL) + "\n"
+
+    if char.have_spells():
+        card += f"{GENERAL_LIGHT_LEFT_CONNECTOR}{GENERAL_LIGHT_LINE * (line_length - 2)}{GENERAL_LIGHT_RIGHT_CONNECTOR}\n"
+        card += get_centralized_txt_in_line(line_length, "SPELLS", GENERAL_WALL, GENERAL_WALL) + "\n"
+        for spell in char.spells:
+            card += get_centralized_txt_in_line(line_length, f"{spell.name}", GENERAL_WALL, GENERAL_WALL) + "\n"
     card += f"{GENERAL_BOTTOM_LEFT_CORNER}{(GENERAL_LINE * (line_length - 2))}{GENERAL_BOTTOM_RIGHT_CORNER}"
 
     # used to print the card as red

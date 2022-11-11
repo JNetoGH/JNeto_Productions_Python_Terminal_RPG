@@ -62,10 +62,6 @@ def execute():
             sleep(5)
             console.status(f'[bold][red]Done!\n')
 
-
-
-
-
     isOpValid = False
     while not isOpValid:
         print('{:^85}'.format('Would you like to create a new character or play with the default ones?'))
