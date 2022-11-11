@@ -22,7 +22,6 @@ joao = Character("joao", 10, 10, 5, 20, 215, [dmg_spell, h_spell])
 dani = Character("Dani", 10, 15, 2, 20, 10, [h_spell])
 
 squad1 = Squad(Ownership.PLAYER, "player squad", [joao, dani])
-
 squad2 = Squad(Ownership.ENEMY, "enemy squad", [Character("Monstrinho", 1, 2, 2, 100, 10),
                                                 Character("Lobao", 3, 2, 3, 100, 10),
                                                 Character("Morcego", 1, 2, 2, 100, 10)])
