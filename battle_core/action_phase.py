@@ -36,7 +36,7 @@ class ActionPhase:
                 ui_resources.clear_terminal()
                 break
             else:
-                input("press any key to next turn")
+                input("press enter to next turn")
             ui_resources.clear_terminal()                                                                                            # clears the screen for the next ui
             print()
 

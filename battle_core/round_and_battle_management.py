@@ -23,7 +23,7 @@ class Battle:
             else:
                 print("action order list is empty")
                 print("another list will be generated")
-                input("press any key to generate another round")
+                input("press enter to generate another round")
 
         print()
         print(battle_stats.get_battle_current_state(current_round.initiativePhase), end="")
