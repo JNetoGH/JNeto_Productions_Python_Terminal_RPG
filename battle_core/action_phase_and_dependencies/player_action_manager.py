@@ -21,43 +21,50 @@ class PlayerActionManager:
         while not action_done:
 
             action_kind = input(f"What should {current_char.name} do? [1:Atk] [2:Spell] [3:Skip] [4:Quit]: ")
-            # todo por return igual o do spell
+
             if action_kind.capitalize() == "Atk" or action_kind == "1":
-                target_char: Character = self._get_a_target_by_name_from_player(current_char, can_pick_itself=False)
-                action = Action(current_char, target_char, PhysicalAtk(Range.SINGLE, can_affect_caster=False))
-                dmg = action.dmg_dealt
-                print(f"{current_char.name} attacked {target_char.name}: tot dmg = {dmg}\n")
-                action_done = True
+                target_char: Character = self._try_get_a_target_by_name_from_player(current_char, can_pick_itself=False)
+                if target_char == "RETURN":
+                    action_done = False
+                else:
+                    action = Action(current_char, target_char, PhysicalAtk(Range.SINGLE, can_affect_caster=False))
+                    dmg = action.dmg_dealt
+                    print(f"{current_char.name} attacked {target_char.name}: tot dmg = {dmg}\n")
+                    action_done = True
 
             elif action_kind.capitalize() == "Spell" or action_kind == "2":
-                spell = PlayerActionManager._get_a_valid_spell_in_char_from_player_or_return_code(current_char)
-                if isinstance(spell, Spell):  # in case the player has chosen return spell won't be a Spell, will be -1
-                    try:
-                        target_char = self._get_a_target_by_name_from_player(current_char, spell.can_affect_caster)
-                        action = Action(current_char, target_char, spell)
-                        action_done = True
-                    except:
-                        print(f"{current_char.name} doesn't have enough mana ({current_char.mana}) to cast "
-                              f"{spell.name} (cost:{spell.mana_cost})")
+                spell = PlayerActionManager.try_get_a_valid_spell_in_char_from_player_or_return_code(current_char)
+                # in case the player has chosen return spell won't be a Spell, will be -1
+                if isinstance(spell, Spell):
+                    target_char = self._try_get_a_target_by_name_from_player(current_char, spell.can_affect_caster)
+                    if target_char == "RETURN":
+                        action_done = False
+                    else:
+                        try:
+                            action = Action(current_char, target_char, spell)
+                            action_done = True
+                        except:
+                            print(f"{current_char.name} doesn't have enough mana ({current_char.mana}) to cast "
+                                  f"{spell.name} (cost:{spell.mana_cost})")
 
             elif action_kind.capitalize() == "Skip" or action_kind == "3":
-                ActionPhaseCaller._force_skip_turn = True
-                action_done = True
+                ActionPhaseCaller._force_skip_turn, action_done = True, True
 
             elif action_kind.capitalize() == "Quit" or action_kind == "4":
-                ActionPhaseCaller.force_quit_battle = True
-                action_done = True
+                ActionPhaseCaller.force_quit_battle, action_done = True, True
+
+
 
     @staticmethod
-    def _get_a_valid_spell_in_char_from_player_or_return_code(current_char: Character) -> Union[Spell, int]:
+    def try_get_a_valid_spell_in_char_from_player_or_return_code(current_char: Character) -> Union[Spell, int]:
         if not current_char.have_spells():
             print(f"invalid, {current_char.name} doesn't have any spells")
         else:
             battle_stats.display_char_spells(current_char)
             while True:  # gets a valid spell asking its index
                 spell_input = input("insert a spell number or type return to choose another action: ")
-                if spell_input.capitalize() == "Return":
-                    return -1
+                if spell_input.upper() == "RETURN":
+                    "RETURN"
                 elif not (spell_input.isnumeric()):
                     print("invalid input, please insert a index")
                 elif spell_input.isnumeric():
@@ -67,10 +74,12 @@ class PlayerActionManager:
                     else:
                         print(f"invalid input, there is no spell with index {spell_input}")
 
-    def _get_a_target_by_name_from_player(self, current_char: Character, can_pick_itself: bool) -> Character:
+    def _try_get_a_target_by_name_from_player(self, current_char: Character, can_pick_itself: bool) -> Character:
         target_char: Character = None
         while target_char is None:
-            chosen_char_name = input(f"Which char should {current_char.name} pick?: ").capitalize()
+            chosen_char_name = input(f"Which char should {current_char.name} pick? insert its name or type return: ").capitalize()
+            if chosen_char_name.upper() == "RETURN":
+                return "RETURN"
             for char in self.all_chars:
                 if char.name.capitalize() == chosen_char_name:
                     target_char = char
