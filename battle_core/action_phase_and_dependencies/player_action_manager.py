@@ -54,7 +54,7 @@ class PlayerActionManager:
                 ActionPhaseCaller.force_quit_battle, action_done = True, True
 
     @staticmethod
-    def try_get_a_valid_spell_in_char_from_player_or_return_code(current_char: Character) -> Union[Spell, int]:
+    def try_get_a_valid_spell_in_char_from_player_or_return_code(current_char: Character) -> Union[Spell, str]:
         if not current_char.have_spells():
             print(f"invalid, {current_char.name} doesn't have any spells")
         else:
@@ -62,7 +62,7 @@ class PlayerActionManager:
             while True:  # gets a valid spell asking its index
                 spell_input = input("insert a spell number or type return to choose another action: ")
                 if spell_input.upper() == "RETURN":
-                    "RETURN"
+                    return "RETURN"
                 elif not (spell_input.isnumeric()):
                     print("invalid input, please insert a index")
                 elif spell_input.isnumeric():
@@ -72,7 +72,7 @@ class PlayerActionManager:
                     else:
                         print(f"invalid input, there is no spell with index {spell_input}")
 
-    def _try_get_a_target_by_name_from_player(self, current_char: Character, can_pick_itself: bool) -> Character:
+    def _try_get_a_target_by_name_from_player(self, current_char: Character, can_pick_itself: bool) -> Union[Character, str]:
         target_char: Character = None
         while target_char is None:
             chosen_char_name = input(f"Which char should {current_char.name} pick? insert its name or type return: ").capitalize()
