@@ -21,7 +21,7 @@ class ActionPhase:
         self.force_quit_battle = False
 
         while len(self.action_order_list) != 0 and self.is_there_a_winner() == Ownership.NULL:                          # while action_order_list is not empty and there is no winner
-            print(battle_stats.get_battle_current_state(self.initiative_phase), end="")                              # prints Ui
+            print(battle_stats.get_battle_current_state(self.initiative_phase), end="")                                 # prints Ui
             current_char = self.action_order_list[0]                                                                    # sets the current char according to the action order list
             self._run_action_turn_for_char(current_char)                                                                # runs action of the current char user/AI based
             self.remove_a_char_from_action_order_list(current_char)                                                     # removes from the action order list the current char, passing the action to the next on if the is any
@@ -55,8 +55,8 @@ class ActionPhase:
         while not action_done:
 
             action_kind = input(f"What should {current_char.name} do? [1:Atk] [2:Spell] [3:Skip] [4:Quit]: ")
-
-            if action_kind.capitalize() == "Atk" or action_kind == "1":                                                 # todo por return igual o do spell
+            # todo por return igual o do spell
+            if action_kind.capitalize() == "Atk" or action_kind == "1":
                 target_char: Character = self._get_a_target_by_name_from_player(current_char, can_pick_itself=False)
                 action = Action(current_char, target_char, PhysicalAtk(Range.SINGLE))
                 dmg = action.dmg_dealt
@@ -67,8 +67,7 @@ class ActionPhase:
                 spell = ActionPhase._get_a_valid_spell_in_char_from_player_or_return_code(current_char)
                 if isinstance(spell, Spell):  # in case the player has chosen return spell won't be a Spell, will be -1
                     try:
-                        # todo can_pick_itself=isinstance(spell, HealingSpell) para um atributo em spell
-                        target_char = self._get_a_target_by_name_from_player(current_char, can_pick_itself=isinstance(spell, HealingSpell))
+                        target_char = self._get_a_target_by_name_from_player(current_char, spell.can_affect_caster)
                         action = Action(current_char, target_char, spell)
                         action_done = True
                     except:
@@ -88,7 +87,7 @@ class ActionPhase:
         if not current_char.have_spells():
             print(f"invalid, {current_char.name} doesn't have any spells")
         else:
-            ActionPhase._display_char_spells(current_char)
+            battle_stats.display_char_spells(current_char)
             while True:  # gets a valid spell asking its index
                 spell_input = input("insert a spell number or type return to choose another action: ")
                 if spell_input.capitalize() == "Return":
@@ -102,15 +101,6 @@ class ActionPhase:
                     else:
                         print(f"invalid input, there is no spell with index {spell_input}")
 
-    @staticmethod  # todo mover isto para class que cuida das
-    def _display_char_spells(current_char: Character) -> None:
-        print(f"\n{current_char.name} Spells")
-        print("--------------------------------------")
-        count = 0
-        for spell in current_char.spells:
-            print(f"[{count}]{spell.name} (mana:{spell.mana_cost}): {spell.description}")
-            count += 1
-        print("--------------------------------------")
 
     def _get_a_target_by_name_from_player(self, current_char: Character, can_pick_itself: bool) -> Character:
         target_char: Character = None

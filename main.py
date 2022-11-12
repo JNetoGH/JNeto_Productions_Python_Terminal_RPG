@@ -1,4 +1,3 @@
-import os
 from ui import ui_resources, title_screen
 from battle_abilities.spells import DmgSpell, HealingSpell
 from battle_abilities.ability import Range
@@ -8,15 +7,13 @@ from battle_core.round_and_battle_management import Battle
 #title_screen.execute()
 
 ui_resources.clear_terminal()
-print()
-print("RULES:\n - YOU CAN ATTACK CHARS IN YOU SQUAD IT'S OKAY! \n - A CHAR CAN'T ATK ITSELF")
-print()
-input("press any key to continue")
+print("\nRULES:\n - YOU CAN ATTACK CHARS IN YOU SQUAD IT'S OKAY! \n - A CHAR CAN'T ATK ITSELF\n")
+input("press enter to continue\n")
 ui_resources.clear_terminal()
 print()
 
-dmg_spell = DmgSpell("dano brabo", "da dano", 5, mana_cost=3, range_type=Range.SINGLE)
-h_spell = HealingSpell("curar", "cura 3 de hp", 3, mana_cost=3, range_type=Range.SINGLE)
+dmg_spell = DmgSpell("dano brabo", "da dano", 5, mana_cost=3, range_type=Range.SINGLE, can_affect_caster=False)
+h_spell = HealingSpell("curar", "cura 3 de hp", 3, mana_cost=3, range_type=Range.SINGLE, can_affect_caster=True)
 
 joao = Character("joao", 10, 10, 5, 20, 215, [dmg_spell, h_spell])
 dani = Character("Dani", 10, 15, 2, 20, 10, [h_spell])

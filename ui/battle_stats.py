@@ -137,3 +137,13 @@ def get_battle_current_state(initiative_phase) -> str:
     state += CBLACK + WHITE_BG + "┗" + "━" * (separators_length+spaces_margin) + "┛" + CLEAR + "\n"
     return state
 
+
+# prints the spells of a char as a list, with name + mana cost + description
+def display_char_spells(current_char) -> None:
+    print(f"\n{current_char.name} Spells")
+    print("--------------------------------------")
+    count = 0
+    for spell in current_char.spells:
+        print(f"[{count}]{spell.name} (mana:{spell.mana_cost}): {spell.description}")
+        count += 1
+    print("--------------------------------------")
