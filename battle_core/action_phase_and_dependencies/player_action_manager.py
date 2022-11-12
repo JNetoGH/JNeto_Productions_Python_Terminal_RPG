@@ -53,8 +53,6 @@ class PlayerActionManager:
             elif action_kind.capitalize() == "Quit" or action_kind == "4":
                 ActionPhaseCaller.force_quit_battle, action_done = True, True
 
-
-
     @staticmethod
     def try_get_a_valid_spell_in_char_from_player_or_return_code(current_char: Character) -> Union[Spell, int]:
         if not current_char.have_spells():
