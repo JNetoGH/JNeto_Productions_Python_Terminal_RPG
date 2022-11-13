@@ -1,3 +1,6 @@
+from random import randrange
+
+
 class Ability:
     def __init__(self, can_affect_allies: bool, can_affect_caster: bool):
         self.can_affect_caster = can_affect_caster
@@ -5,7 +8,6 @@ class Ability:
 
     def exec(self, caster, target):
         pass
-
 
 class PhysicalAtk(Ability):
     def __init__(self):
@@ -47,6 +49,7 @@ class DmgSpell(Spell):
         if target.health < 0:
             target.health = 0
 
+
 class HealingSpell(Spell):
     def __init__(self, name: str, description: str, effect_points: int, mana_cost: int, can_affect_allies: bool, can_affect_caster: bool):
         super().__init__(name, description, effect_points, mana_cost, can_affect_allies=can_affect_allies, can_affect_caster=can_affect_caster)
@@ -54,3 +57,22 @@ class HealingSpell(Spell):
     def exec(self, caster, target):
         super(HealingSpell, self).exec(caster, target)
         target.health += self.effect_points
+
+
+class RushDown(DmgSpell):
+    def __init__(self):
+        super().__init__("RushDown", "(WP + D4)", 0, 5)
+
+    def exec(self, caster, target):
+        dmg = caster.weapon_dmg + randrange(1, 4)
+        self.effect_points = dmg
+        super(RushDown, self).exec(caster, caster)
+
+class Exorcism(DmgSpell):
+    def __init__(self):
+        super().__init__("Exorcism", "(2 * D4)", 0, 5)
+
+    def exec(self, caster, target):
+        dmg = 2 * randrange(1, 2)
+        self.effect_points = dmg
+        super(Exorcism, self).exec(caster, caster)

@@ -1,3 +1,6 @@
+from random import randrange
+
+from battle_abilities.ability import PhysicalAtk
 from battle_core.action_phase_and_dependencies.player_action_manager import PlayerActionManager
 from ui import ui_resources, battle_stats
 from battle_entities.char_and_squad import Character, Squad, Ownership
@@ -47,8 +50,25 @@ class ActionPhase:
         PlayerActionManager(self, current_char, all_chars=self._all_chars)
 
     def _ai_action(self, char: Character) -> None:
-        print("\nai action no implemented yet, using same system as player")
-        self._player_action(char)
+        print("\nai can only make physical atks according to professor's rules")
+
+        # generates a list of possible chars
+        list_of_possible_targets = []
+        for target in self._all_chars:
+            if (not target.is_dead()) and target.ownership != char.ownership:
+                list_of_possible_targets.append(target)
+
+        chosen_index = -1
+        # can't make a  range between 0 and 0, so whe there is only one possibility i hardcoded it
+        if len(list_of_possible_targets) == 1:
+            chosen_index = 0
+        else:
+            chosen_index = randrange(0, len(list_of_possible_targets)-1)
+        chosen_target = list_of_possible_targets[chosen_index]
+        atk = PhysicalAtk()
+        atk.exec(char, chosen_target)
+        print(f"{char.name} attacked {chosen_target.name} dmg dealt = {atk.dmg}")
+
 
     def remove_a_char_from_action_order_list(self, char: Character) -> bool:
         if char in self.action_order_list:
