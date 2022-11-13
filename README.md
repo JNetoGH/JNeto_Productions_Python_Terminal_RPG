@@ -15,7 +15,7 @@ Daniela (a22202104):
 
 
 
-## ARQUITERURA
+## ARQUITETURA
 Estamos disponibilizando junto ao source um diagrama que mostra a arquitetura do sistema como um todo.
 Este diagrama também pode ser acessado, por este link: 
 https://drive.google.com/drive/folders/11IZPW_Waw7i5_KGCOitn4BVyMqHW58dN?usp=sharing
