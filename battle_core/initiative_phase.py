@@ -51,5 +51,5 @@ class InitiativePhase:
         text = "ACTION ORDER(init+D20):"
         for i in range(0, len(self.action_order_list)):
             char = self.action_order_list[i]
-            text += f" {char.name}({char.turn_order}+{char.turn_order - char.initiative})"
+            text += f" {char.name}({char.turn_order})"
         return text
