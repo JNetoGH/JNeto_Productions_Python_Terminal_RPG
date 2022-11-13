@@ -1,11 +1,7 @@
 from ui import battle_stats
 from typing import Union
-from battle_abilities.ability import Range
-from battle_abilities.physical_atk import PhysicalAtk
-from battle_abilities.spells import Spell, DmgSpell, HealingSpell
-from battle_core.action_phase_and_dependencies.action import Action
+from battle_abilities.ability import *
 from battle_entities.char_and_squad import Character, Ownership
-
 
 
 # It manages the user's input in order to make an action.
@@ -23,51 +19,38 @@ class PlayerActionManager:
 
             action_kind = input(f"What should {current_char.name} do? [1:Atk] [2:Spell] [3:Skip] [4:Quit]: ")
 
+            # ATK
             if action_kind.capitalize() == "Atk" or action_kind == "1":
                 target_char: Character = self._try_get_a_target_by_name_from_player(current_char, can_pick_itself=False)
-                if target_char == "RETURN":
-                    action_done = False
-                else:
-                    action = Action(current_char, target_char, PhysicalAtk())
-                    dmg = action.dmg_dealt
-                    print(f"{current_char.name} attacked {target_char.name}: tot dmg = {dmg}\n")
-                    action_done = True
+                if target_char == "RETURN":  # if the player picks a char called return target will be "RETURN"
+                    continue
+                atk = PhysicalAtk()
+                atk.exec(current_char, target_char)
+                print(f"{current_char.name} attacked {target_char.name}: tot dmg(atk-def) = {atk.dmg}\n")
+                action_done = True
 
+            # SPELL
             elif action_kind.capitalize() == "Spell" or action_kind == "2":
+
                 spell = PlayerActionManager.try_get_a_valid_spell_in_char_from_player_or_return_code(current_char)
-                # in case the player has chosen return spell won't be a Spell, will be -1
-                if isinstance(spell, Spell):
+                if spell == "RETURN":  # if player has chosen return spell won't be a Spell, will be "RETURN"
+                    continue
+                target = self._try_get_a_target_by_name_from_player(current_char, spell.can_affect_caster)
+                if target == "RETURN": # if the player picks a char called return target will be "RETURN"
+                    continue
 
-                    target = None
-                    if spell.range_type == Range.SINGLE:
-                        target = self._try_get_a_target_by_name_from_player(current_char, spell.can_affect_caster)
+                try:  # if the caster doesn't have enough mana, an exception is launched
+                    spell.exec(current_char, target)
+                    action_done = True
+                except:
+                    print(f"{current_char.name} doesn't have enough mana ({current_char.mana}) to cast "
+                          f"{spell.name} (cost:{spell.mana_cost})")
 
-                    elif spell.range_type == Range.AREA:
-                        if isinstance(spell, DmgSpell):
-                            if ActionPhaseCaller.squad1.ownership == Ownership.ENEMY:
-                                target = ActionPhaseCaller.squad1
-                            elif ActionPhaseCaller.squad2.ownership == Ownership.ENEMY:
-                                target = ActionPhaseCaller.squad2
-                        elif isinstance(spell, HealingSpell):
-                            if ActionPhaseCaller.squad1.ownership == Ownership.PLAYER:
-                                target = ActionPhaseCaller.squad1
-                            elif ActionPhaseCaller.squad2.ownership == Ownership.PLAYER:
-                                target = ActionPhaseCaller.squad2
-
-                    if target == "RETURN":
-                        action_done = False
-
-                    else:
-                        try:
-                            action = Action(current_char, target, spell)
-                            action_done = True
-                        except:
-                            print(f"{current_char.name} doesn't have enough mana ({current_char.mana}) to cast "
-                                  f"{spell.name} (cost:{spell.mana_cost})")
-
+            # SKIP
             elif action_kind.capitalize() == "Skip" or action_kind == "3":
                 ActionPhaseCaller._force_skip_turn, action_done = True, True
 
+            # QUIT
             elif action_kind.capitalize() == "Quit" or action_kind == "4":
                 ActionPhaseCaller.force_quit_battle, action_done = True, True
 
@@ -102,7 +85,7 @@ class PlayerActionManager:
             if target_char is None:
                 print(f"invalid input, {chosen_char_name} does not exist")
             elif target_char is current_char and not(can_pick_itself):
-                print("invalid input, a char can't atk itself")
+                print("invalid input, this ability can't affect its caster")
                 target_char = None
             elif target_char.is_dead():
                 print(f"invalid input, {target_char.name} is already dead")
