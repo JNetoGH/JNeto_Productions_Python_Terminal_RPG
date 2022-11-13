@@ -6,13 +6,12 @@ from battle_core.round_and_battle_management import Battle
 #title_screen.execute()
 
 ui_resources.clear_terminal()
-print("\nRULES:\n - YOU CAN ATTACK CHARS IN YOU SQUAD IT'S OKAY! \n - A CHAR CAN'T ATK ITSELF\n")
-input("press enter to continue\n")
+input("press enter to start\n")
 ui_resources.clear_terminal()
 print()
 
-dmg_spell = DmgSpell("dano brabo", "da dano", 210, mana_cost=2, can_affect_caster=False)
-h_spell = HealingSpell("curar", "cura 3 de hp", 3, mana_cost=3, can_affect_caster=True)
+dmg_spell = DmgSpell("dano brabo", "da dano", 210, mana_cost=2)
+h_spell = HealingSpell("curar", "cura 3 de hp", 3, mana_cost=3, can_affect_allies=True, can_affect_caster=True)
 
 
 joao = Character("joao", 10, 10, 5, 20, 215, [dmg_spell])

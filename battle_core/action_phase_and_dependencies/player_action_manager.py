@@ -19,43 +19,33 @@ class PlayerActionManager:
 
             action_kind = input(f"What should {current_char.name} do? [1:Atk] [2:Spell] [3:Skip] [4:Quit]: ")
 
-            # ATK
             if action_kind.capitalize() == "Atk" or action_kind == "1":
-                target_char: Character = self._try_get_a_target_by_name_from_player(current_char, can_pick_itself=False)
+                atk = PhysicalAtk()
+                target_char: Character = self._get_a_target_by_name_from_player_and_validate_target(current_char, atk.can_affect_allies, atk.can_affect_caster)
                 if target_char == "RETURN":  # if the player picks a char called return target will be "RETURN"
                     continue
-                atk = PhysicalAtk()
                 atk.exec(current_char, target_char)
                 print(f"{current_char.name} attacked {target_char.name}: tot dmg(atk-def) = {atk.dmg}\n")
                 action_done = True
 
-            # SPELL
             elif action_kind.capitalize() == "Spell" or action_kind == "2":
-
-                spell = PlayerActionManager.try_get_a_valid_spell_in_char_from_player_or_return_code(current_char)
+                spell = PlayerActionManager.get_a_spell_in_char_from_player_and_validate_spell(current_char)
                 if spell == "RETURN":  # if player has chosen return spell won't be a Spell, will be "RETURN"
                     continue
-                target = self._try_get_a_target_by_name_from_player(current_char, spell.can_affect_caster)
-                if target == "RETURN": # if the player picks a char called return target will be "RETURN"
+                target = self._get_a_target_by_name_from_player_and_validate_target(current_char, spell.can_affect_allies, spell.can_affect_caster)
+                if target == "RETURN":  # if the player picks a char called return target will be "RETURN"
                     continue
+                spell.exec(current_char, target)
+                action_done = True
 
-                try:  # if the caster doesn't have enough mana, an exception is launched
-                    spell.exec(current_char, target)
-                    action_done = True
-                except:
-                    print(f"{current_char.name} doesn't have enough mana ({current_char.mana}) to cast "
-                          f"{spell.name} (cost:{spell.mana_cost})")
-
-            # SKIP
             elif action_kind.capitalize() == "Skip" or action_kind == "3":
                 ActionPhaseCaller._force_skip_turn, action_done = True, True
 
-            # QUIT
             elif action_kind.capitalize() == "Quit" or action_kind == "4":
                 ActionPhaseCaller.force_quit_battle, action_done = True, True
 
     @staticmethod
-    def try_get_a_valid_spell_in_char_from_player_or_return_code(current_char: Character) -> Union[Spell, str]:
+    def get_a_spell_in_char_from_player_and_validate_spell(current_char: Character) -> Union[Spell, str]:
         if not current_char.have_spells():
             print(f"invalid, {current_char.name} doesn't have any spells")
         else:
@@ -69,19 +59,25 @@ class PlayerActionManager:
                 elif spell_input.isnumeric():
                     spell_index = int(spell_input)
                     if 0 <= spell_index < len(current_char.spells):
-                        return current_char.spells[spell_index]
+                        spell: Spell = current_char.spells[spell_index]
+                        if current_char.mana < spell.mana_cost:
+                            print(f"{spell.name} cost({spell.mana_cost}) > {current_char.name} mana {current_char.mana}")
+                        else:
+                            return spell
                     else:
                         print(f"invalid input, there is no spell with index {spell_input}")
 
-    def _try_get_a_target_by_name_from_player(self, current_char: Character, can_pick_itself: bool) -> Union[Character, str]:
+    def _get_a_target_by_name_from_player_and_validate_target(self, current_char: Character, can_pick_allies: bool, can_pick_itself: bool) -> Union[Character, str]:
         target_char: Character = None
         while target_char is None:
             chosen_char_name = input(f"Which char should {current_char.name} pick? insert its name or type return: ").capitalize()
             if chosen_char_name.upper() == "RETURN":
                 return "RETURN"
+            # gets the chosen char among the avaliables one in battle
             for char in self.all_chars:
                 if char.name.capitalize() == chosen_char_name:
                     target_char = char
+            # checks if the chosen char is valid according to those rules
             if target_char is None:
                 print(f"invalid input, {chosen_char_name} does not exist")
             elif target_char is current_char and not(can_pick_itself):
@@ -89,5 +85,8 @@ class PlayerActionManager:
                 target_char = None
             elif target_char.is_dead():
                 print(f"invalid input, {target_char.name} is already dead")
+                target_char = None
+            elif (not can_pick_allies) and target_char.ownership == current_char.ownership:
+                print(f"invalid input, this ability doesn't allow picking an ally")
                 target_char = None
         return target_char

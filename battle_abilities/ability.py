@@ -1,6 +1,7 @@
 class Ability:
-    def __init__(self, can_affect_caster: bool):
+    def __init__(self, can_affect_allies: bool, can_affect_caster: bool):
         self.can_affect_caster = can_affect_caster
+        self.can_affect_allies = can_affect_allies
 
     def exec(self, caster, target):
         pass
@@ -8,7 +9,7 @@ class Ability:
 
 class PhysicalAtk(Ability):
     def __init__(self):
-        super().__init__(can_affect_caster=False)
+        super().__init__(can_affect_allies=False, can_affect_caster=False)
         self.dmg = 0
 
     def exec(self, caster, target):
@@ -22,28 +23,23 @@ class PhysicalAtk(Ability):
 
 
 class Spell(Ability):
-    def __init__(self, name: str, description: str, effect_points: int, mana_cost: int, can_affect_caster: bool):
-        super().__init__(can_affect_caster=can_affect_caster)
+    def __init__(self, name: str, description: str, effect_points: int, mana_cost: int,  can_affect_allies: bool, can_affect_caster: bool):
+        super().__init__(can_affect_allies=can_affect_allies, can_affect_caster=can_affect_caster)
         self.mana_cost = mana_cost
         self.effect_points = effect_points
         self.name = name
         self.description = description
 
-    def check_if_char_has_enough_mana(self, charCaster):
-        if charCaster.mana < self.mana_cost:
-            raise Exception(f"{self.name} cost({self.mana_cost}) > {charCaster.name} mana {charCaster.mana}")
-
     def decrease_mana_from_caster(self, charCaster):
         charCaster.mana -= self.mana_cost
 
     def exec(self, caster, target):
-        self.check_if_char_has_enough_mana(caster)
         self.decrease_mana_from_caster(caster)
 
 
 class DmgSpell(Spell):
-    def __init__(self, name: str, description: str, effect_points: int, mana_cost: int, can_affect_caster: bool):
-        super().__init__(name, description, effect_points, mana_cost, can_affect_caster)
+    def __init__(self, name: str, description: str, effect_points: int, mana_cost: int):
+        super().__init__(name, description, effect_points, mana_cost, False, False)
 
     def exec(self, caster, target):
         super(DmgSpell, self).exec(caster, target)
@@ -52,8 +48,8 @@ class DmgSpell(Spell):
             target.health = 0
 
 class HealingSpell(Spell):
-    def __init__(self, name: str, description: str, effect_points: int, mana_cost: int, can_affect_caster: bool):
-        super().__init__(name, description, effect_points, mana_cost, can_affect_caster)
+    def __init__(self, name: str, description: str, effect_points: int, mana_cost: int, can_affect_allies: bool, can_affect_caster: bool):
+        super().__init__(name, description, effect_points, mana_cost, can_affect_allies=can_affect_allies, can_affect_caster=can_affect_caster)
 
     def exec(self, caster, target):
         super(HealingSpell, self).exec(caster, target)
