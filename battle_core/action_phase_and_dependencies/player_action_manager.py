@@ -32,7 +32,7 @@ class PlayerActionManager:
                 spell = PlayerActionManager.get_a_spell_in_char_from_player_and_validate_spell(current_char)
                 if spell == "RETURN":  # if player has chosen return spell won't be a Spell, will be "RETURN"
                     continue
-                target = self._get_a_target_by_name_from_player_and_validate_target(current_char, spell.can_affect_allies, spell.can_affect_caster)
+                target = self._get_a_target_by_name_from_player_and_validate_target(current_char, spell.can_affect_allies, spell.can_affect_caster, spell.can_affect_enemy)
                 if target == "RETURN":  # if the player picks a char called return target will be "RETURN"
                     continue
                 spell.exec(current_char, target)
@@ -67,10 +67,12 @@ class PlayerActionManager:
                     else:
                         print(f"invalid input, there is no spell with index {spell_input}")
 
-    def _get_a_target_by_name_from_player_and_validate_target(self, current_char: Character, can_pick_allies: bool, can_pick_itself: bool) -> Union[Character, str]:
+    def _get_a_target_by_name_from_player_and_validate_target(self, current_char: Character, can_pick_allies: bool, can_pick_itself: bool, can_pick_enemy: bool = True) -> Union[Character, str]:
         target_char: Character = None
-        while target_char is None:
+        while not isinstance(target_char, Character):
             chosen_char_name = input(f"Which char should {current_char.name} pick? insert its name or type return: ").capitalize()
+            if chosen_char_name == "":
+                continue
             if chosen_char_name.upper() == "RETURN":
                 return "RETURN"
             # gets the chosen char among the avaliables one in battle
@@ -89,4 +91,8 @@ class PlayerActionManager:
             elif (not can_pick_allies) and target_char.ownership == current_char.ownership:
                 print(f"invalid input, this ability doesn't allow picking an ally")
                 target_char = None
+            if target_char.ownership == Ownership.ENEMY and can_pick_enemy == False:
+                print(f"invalid input, this ability doesn't allow picking an enemy")
+                target_char = None
+
         return target_char
