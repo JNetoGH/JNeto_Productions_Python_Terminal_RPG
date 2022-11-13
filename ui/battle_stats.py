@@ -109,13 +109,11 @@ def get_centralized_txt_in_line(card_width: int, msg: str = "Default", wall1: st
 
     is_msg_length_even = msg_len % 2 == 0
     if is_msg_length_even:
-        return wall1 + " " * (int((card_width / 2 - msg_len / 2)) - 1) + msg + " " * (
-                int((card_width / 2 - msg_len / 2)) - 1) + wall2
+        return wall1 + " " * (int((card_width / 2 - msg_len / 2)) - 1) + msg + " " * (int((card_width / 2 - msg_len / 2)) - 1) + wall2
     # Adds an extra space "|" -> " |", e.g. len(msg) = 11, the division per 2 would be 5, not 5.5,
     # therefore, it would be, (line_length - 5) + msg + (line_length - 5), being discounted 10 for the msg instead o 11
     else:
-        return wall1 + " " * (int((card_width / 2 - msg_len / 2)) - 1) + msg + " " * (
-                int((card_width / 2 - msg_len / 2)) - 1) + " " + wall2
+        return wall1 + " " * (int((card_width / 2 - msg_len / 2)) - 1) + msg + " " * (int((card_width / 2 - msg_len / 2)) - 1) + " " + wall2
 
 
 def get_battle_current_state(initiative_phase) -> str:

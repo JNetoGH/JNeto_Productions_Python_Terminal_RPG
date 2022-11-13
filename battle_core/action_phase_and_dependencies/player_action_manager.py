@@ -2,9 +2,10 @@ from ui import battle_stats
 from typing import Union
 from battle_abilities.ability import Range
 from battle_abilities.physical_atk import PhysicalAtk
-from battle_abilities.spells import Spell
+from battle_abilities.spells import Spell, DmgSpell, HealingSpell
 from battle_core.action_phase_and_dependencies.action import Action
-from battle_entities.char_and_squad import Character
+from battle_entities.char_and_squad import Character, Ownership
+
 
 
 # It manages the user's input in order to make an action.
@@ -27,7 +28,7 @@ class PlayerActionManager:
                 if target_char == "RETURN":
                     action_done = False
                 else:
-                    action = Action(current_char, target_char, PhysicalAtk(Range.SINGLE, can_affect_caster=False))
+                    action = Action(current_char, target_char, PhysicalAtk())
                     dmg = action.dmg_dealt
                     print(f"{current_char.name} attacked {target_char.name}: tot dmg = {dmg}\n")
                     action_done = True
@@ -36,12 +37,29 @@ class PlayerActionManager:
                 spell = PlayerActionManager.try_get_a_valid_spell_in_char_from_player_or_return_code(current_char)
                 # in case the player has chosen return spell won't be a Spell, will be -1
                 if isinstance(spell, Spell):
-                    target_char = self._try_get_a_target_by_name_from_player(current_char, spell.can_affect_caster)
-                    if target_char == "RETURN":
+
+                    target = None
+                    if spell.range_type == Range.SINGLE:
+                        target = self._try_get_a_target_by_name_from_player(current_char, spell.can_affect_caster)
+
+                    elif spell.range_type == Range.AREA:
+                        if isinstance(spell, DmgSpell):
+                            if ActionPhaseCaller.squad1.ownership == Ownership.ENEMY:
+                                target = ActionPhaseCaller.squad1
+                            elif ActionPhaseCaller.squad2.ownership == Ownership.ENEMY:
+                                target = ActionPhaseCaller.squad2
+                        elif isinstance(spell, HealingSpell):
+                            if ActionPhaseCaller.squad1.ownership == Ownership.PLAYER:
+                                target = ActionPhaseCaller.squad1
+                            elif ActionPhaseCaller.squad2.ownership == Ownership.PLAYER:
+                                target = ActionPhaseCaller.squad2
+
+                    if target == "RETURN":
                         action_done = False
+
                     else:
                         try:
-                            action = Action(current_char, target_char, spell)
+                            action = Action(current_char, target, spell)
                             action_done = True
                         except:
                             print(f"{current_char.name} doesn't have enough mana ({current_char.mana}) to cast "
